@@ -22,14 +22,14 @@ Triangle::~Triangle()
 
 HRESULT Triangle::Create(HWND hwnd)
 {
-	HRESULT hr = 1;
+	HRESULT hr;
 
 	// メッシュ描画クラスを作成する
 	m_meshRenderer = new MeshRenderer();
 
 	hr = m_meshRenderer->Create(hwnd, m_pVertexArray,ARRAYSIZE(m_pVertexArray));
 
-	return hr;
+	return S_OK;
 }
 
 void Triangle::Render()

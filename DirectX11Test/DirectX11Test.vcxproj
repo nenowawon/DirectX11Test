@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="DirectX11Test.h" />
     <ClInclude Include="DirectXRenderer.h" />
     <ClInclude Include="GameObject.h" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DirectX11Test.cpp" />
     <ClCompile Include="DirectXRenderer.cpp" />
     <ClCompile Include="GameObject.cpp" />

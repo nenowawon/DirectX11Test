@@ -10,6 +10,13 @@
 
 using namespace DirectX;
 
+
+struct ConstantBuffer {
+	XMFLOAT4X4 world;
+	XMFLOAT4X4 view;
+	XMFLOAT4X4 projection;
+};
+
 MeshRenderer::MeshRenderer() :
 	m_pVertexBuffer(nullptr),
 	m_pIndexBuffer(nullptr),
@@ -79,6 +86,18 @@ HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount)
 	m_Viewport.MinDepth = 0.0f;
 	m_Viewport.MaxDepth = 1.0f;
 
+	//定数バッファを作成する
+	D3D11_BUFFER_DESC cbDesc;
+	cbDesc.ByteWidth = sizeof(ConstantBuffer);
+	cbDesc.Usage = D3D11_USAGE_DEFAULT;
+	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbDesc.CPUAccessFlags = 0;
+	cbDesc.MiscFlags = 0;
+	cbDesc.StructureByteStride = 0;
+
+	hr = pDevice->CreateBuffer(&cbDesc, NULL, &m_pConstantBuffer);
+	if (FAILED(hr)) return hr;
+
 	return true;
 }
 
@@ -108,7 +127,7 @@ HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount, int* 
 
 	if (FAILED(hr)) { return hr; }
 
-	return hr;
+	return S_OK;
 }
 
 void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos)
@@ -139,11 +158,38 @@ void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, int indexCount)
 // 描画用のパラメーターをセットする
 void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext)
 {
+
+	// ワールドマトリックス作成
+	XMMATRIX worldMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+
+	// ビューマトリックス作成
+	XMVECTOR eye = XMVectorSet(1.0f, 1.0f, -2.0f, 0.0f);
+	XMVECTOR focus = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	XMMATRIX viewMatrix = XMMatrixLookAtLH(eye, focus, up);
+
+	// プロジェクションマトリックス作成
+	float    fov = XMConvertToRadians(45.0f);
+	float    aspect = m_Viewport.Width / m_Viewport.Height;
+	float    nearZ = 0.1f;
+	float    farZ = 100.0f;
+	XMMATRIX projMatrix = XMMatrixPerspectiveFovLH(fov, aspect, nearZ, farZ);
+
+	ConstantBuffer cb;
+	XMStoreFloat4x4(&cb.world, XMMatrixTranspose(worldMatrix));
+	XMStoreFloat4x4(&cb.view, XMMatrixTranspose(viewMatrix));
+	XMStoreFloat4x4(&cb.projection, XMMatrixTranspose(projMatrix));
+	pDeviceContext->UpdateSubresource(m_pConstantBuffer, 0, NULL, &cb, 0, 0);
+
 	UINT strides = sizeof(Vertex);
 	UINT offsets = 0;
+	// インプットレイアウトをセット
 	pDeviceContext->IASetInputLayout(m_pInputLayout);
+	// 頂点バッファをセット
 	pDeviceContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &strides, &offsets);
 	pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// 定数バッファをセット
+	pDeviceContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
 	pDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
 	pDeviceContext->RSSetViewports(1, &m_Viewport);
 	pDeviceContext->PSSetShader(m_pPixelShader, NULL, 0);

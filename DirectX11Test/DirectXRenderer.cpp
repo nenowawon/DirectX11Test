@@ -1,8 +1,12 @@
 #include "stdafx.h"
 #include "DirectXRenderer.h"
 #include <atltypes.h>
+
+// 図形クラス
 #include "Triangle.h"
 #include "Rectangle.h"
+#include "Cube.h"
+
 #include <directxmath.h>
 
 #include "Camera.h"
@@ -11,7 +15,11 @@ using namespace Mesh;
 
 //GameObject** g_triangle;
 
-GameObject* g_triangleArray[2] = { new Triangle(),/*new Triangle(),*/new Mesh::Rectangle()};
+GameObject* g_MeshArray[1] = { 
+								//new Triangle(),
+								//new Mesh::Rectangle(),
+							    new Cube(),
+							};
 
 DirectXRenderer* DirectXRenderer::instance = nullptr;
 
@@ -123,8 +131,9 @@ HRESULT DirectXRenderer::Create(HWND hwnd)
 	// カメラ
 	m_camera = new Camera();
 
-	for (auto triangle : g_triangleArray) {
-		triangle->Create(hwnd);
+	// 図形を作成する
+	for (auto mesh : g_MeshArray) {
+		mesh->Create(hwnd);
 	}
 
 	D3D11_RASTERIZER_DESC rastDesc;
@@ -137,7 +146,7 @@ HRESULT DirectXRenderer::Create(HWND hwnd)
 
 	m_pDevice->CreateRasterizerState(&rastDesc,&m_pRasterizerState);
 
-	return hr;
+	return S_OK;
 }
 
 void DirectXRenderer::Render()
@@ -157,9 +166,9 @@ void DirectXRenderer::Render()
 	//// ラスタライザステートをセットする
 	//m_pImmediateContext->RSSetState(m_pRasterizerState);
 
-	for (auto triangle : g_triangleArray) {
-		// 三角形を描画する
-		triangle->Render();
+	for (auto mesh : g_MeshArray) {
+		// 図形を描画する
+		mesh->Render();
 	}
 
 	m_pSwapChain->Present(0, 0);
@@ -187,9 +196,9 @@ void DirectXRenderer::Release()
 		m_pDevice = NULL;
 	}
 
-	// 三角形を開放する
-	for (auto triangle : g_triangleArray) {
-		delete(triangle);
+	// 図形を開放する
+	for (auto mesh : g_MeshArray) {
+		delete(mesh);
 	}
 
 	delete(m_camera);

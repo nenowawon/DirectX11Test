@@ -19,14 +19,14 @@ Rectangle::~Rectangle()
 
 HRESULT Rectangle::Create(HWND hwnd)
 {
-	HRESULT hr = 1;
+	HRESULT hr;
 
 	// メッシュ描画クラスを作成する
 	m_meshRenderer = new MeshRenderer();
 
 	hr = m_meshRenderer->Create(hwnd, m_pVertexArray,ARRAYSIZE(m_pVertexArray), m_IndexArray, ARRAYSIZE(m_IndexArray));
 
-	return hr;
+	return S_OK;
 }
 
 void Rectangle::Render()
