@@ -153,6 +153,7 @@
     <ClInclude Include="DirectX11Test.h" />
     <ClInclude Include="DirectXRenderer.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Resource.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="DirectX11Test.cpp" />
     <ClCompile Include="DirectXRenderer.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="stdafx.cpp">
