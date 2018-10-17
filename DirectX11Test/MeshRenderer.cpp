@@ -136,6 +136,7 @@ void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, int indexCount)
 
 }
 
+// 描画用のパラメーターをセットする
 void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext)
 {
 	UINT strides = sizeof(Vertex);
