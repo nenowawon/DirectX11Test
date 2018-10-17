@@ -26,6 +26,7 @@ public:
 	static DirectXRenderer* instance;
 
 	virtual HRESULT Create(HWND hwnd);
+	virtual void    Update();
 	virtual void    Render();
 	virtual void    Release();
 	

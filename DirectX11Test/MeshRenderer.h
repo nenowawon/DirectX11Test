@@ -13,9 +13,9 @@ public:
 
 	virtual HRESULT Create(HWND hwnd, Vertex* p_vertex,int vertexCount);
 	virtual HRESULT Create(HWND hwnd, Vertex* p_vertex, int vertexCount, int* p_index, int indexCount);
-	virtual void    Render(int vertexCount, DirectX::XMFLOAT3 pos);
-	virtual void    Render(int vertexCount, DirectX::XMFLOAT3 pos, int indexCount);
-	virtual void    SetParamater(ID3D11DeviceContext* pDeviceContext);
+	virtual void    Render(int vertexCount, DirectX::XMFLOAT3 pos, DirectX::XMFLOAT3 rotate, DirectX::XMFLOAT3 scale);
+	virtual void    Render(int vertexCount, DirectX::XMFLOAT3 pos, DirectX::XMFLOAT3 rotate, DirectX::XMFLOAT3 scale,int indexCount);
+	virtual void    SetParamater(ID3D11DeviceContext* pDeviceContext, DirectX::XMFLOAT3 pos, DirectX::XMFLOAT3 rotate,DirectX::XMFLOAT3 scale);
 	virtual void    Release();
 
 private:

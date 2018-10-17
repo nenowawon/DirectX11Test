@@ -27,9 +27,19 @@ HRESULT Cube::Create(HWND hwnd)
 	return S_OK;
 }
 
+void Cube::Update()
+{
+	m_rotate.x += 0.01f;
+	m_rotate.y += 0.01f;
+	m_rotate.z += 0.01f;
+
+	
+}
+
 void Cube::Render()
 {
-	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), m_pos, ARRAYSIZE(m_IndexArray));
+
+	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), m_pos, m_rotate, m_scale, ARRAYSIZE(m_IndexArray));
 }
 
 void Cube::Release()

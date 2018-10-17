@@ -130,25 +130,25 @@ HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount, int* 
 	return S_OK;
 }
 
-void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos)
+void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, DirectX::XMFLOAT3 rotate, DirectX::XMFLOAT3 scale)
 {
 	// デバイスコンテキストを取得する
 	ID3D11DeviceContext* pDeviceContext = DirectXRenderer::instance->m_pImmediateContext;
 
-	SetParamater(pDeviceContext);
+	SetParamater(pDeviceContext, pos, rotate,scale);
 
 	pDeviceContext->Draw(vertexCount, 0);
 
 }
 
-void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, int indexCount)
+void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, XMFLOAT3 rotate,XMFLOAT3 scale, int indexCount)
 {
 	// デバイスコンテキストを取得する
 	ID3D11DeviceContext* pDeviceContext = DirectXRenderer::instance->m_pImmediateContext;
 
 	pDeviceContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-	SetParamater(pDeviceContext);
+	SetParamater(pDeviceContext, pos, rotate,scale);
 
 	// 描画する
 	pDeviceContext->DrawIndexed(indexCount, 0, 0);
@@ -156,14 +156,27 @@ void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, int indexCount)
 }
 
 // 描画用のパラメーターをセットする
-void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext)
+void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext, XMFLOAT3 pos, XMFLOAT3 rotate, XMFLOAT3 scale)
 {
 
 	// ワールドマトリックス作成
-	XMMATRIX worldMatrix = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	XMMATRIX mat_trans, mat_rotate,mat_scale;
+
+	mat_trans = XMMatrixTranslation(pos.x, pos.y, pos.z);
+
+
+	mat_rotate = XMMatrixRotationX(rotate.x);
+	mat_rotate = XMMatrixMultiply(mat_rotate,XMMatrixRotationY(rotate.y));
+	mat_rotate = XMMatrixMultiply(mat_rotate, XMMatrixRotationZ(rotate.z));
+
+	mat_scale = XMMatrixScaling(scale.x, scale.y,scale.z);
+
+	XMMATRIX worldMatrix = XMMatrixMultiply(mat_scale, mat_rotate);
+
+	worldMatrix = XMMatrixMultiply(worldMatrix,mat_trans);
 
 	// ビューマトリックス作成
-	XMVECTOR eye = XMVectorSet(1.0f, 1.0f, -2.0f, 0.0f);
+	XMVECTOR eye = XMVectorSet(0.0f, 1.0f, -2.0f, 0.0f);
 	XMVECTOR focus = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	XMMATRIX viewMatrix = XMMatrixLookAtLH(eye, focus, up);

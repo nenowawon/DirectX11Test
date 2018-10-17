@@ -15,9 +15,9 @@ using namespace Mesh;
 
 //GameObject** g_triangle;
 
-GameObject* g_MeshArray[1] = { 
-								//new Triangle(),
-								//new Mesh::Rectangle(),
+GameObject* g_MeshArray[] = { 
+								new Triangle(),
+								new Mesh::Rectangle(),
 							    new Cube(),
 							};
 
@@ -149,6 +149,14 @@ HRESULT DirectXRenderer::Create(HWND hwnd)
 	return S_OK;
 }
 
+void DirectXRenderer::Update() 
+{
+	for (auto mesh : g_MeshArray) {
+		// }Œ`‚ÌXVˆ—
+		mesh->Update();
+	}
+}
+
 void DirectXRenderer::Render()
 {
 	if (NULL == m_pDevice) return;
@@ -171,7 +179,7 @@ void DirectXRenderer::Render()
 		mesh->Render();
 	}
 
-	m_pSwapChain->Present(0, 0);
+	m_pSwapChain->Present(1, 0);
 }
 
 void DirectXRenderer::Release()

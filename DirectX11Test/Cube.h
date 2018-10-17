@@ -10,7 +10,7 @@ namespace Mesh {
 		Cube();
 		~Cube();
 
-		float const oneSide = 0.5f;
+		float const oneSide = 0.3f;
 
 		Vertex m_pVertexArray[8] = {
 			{ { -oneSide, -oneSide,  oneSide }, { 1.0f, 0.0f, 0.0f, 1.0f } },
@@ -45,6 +45,7 @@ namespace Mesh {
 		};
 
 		virtual HRESULT Create(HWND hwnd);
+		virtual void    Update();
 		virtual void    Render();
 		virtual void    Release();
 	};

@@ -9,9 +9,11 @@
 
 using namespace Mesh;
 
+using namespace DirectX;
+
 Triangle::Triangle()
 {
-
+	m_pos = XMFLOAT3(1, 0, 0);
 }
 
 
@@ -27,14 +29,34 @@ HRESULT Triangle::Create(HWND hwnd)
 	// メッシュ描画クラスを作成する
 	m_meshRenderer = new MeshRenderer();
 
-	hr = m_meshRenderer->Create(hwnd, m_pVertexArray,ARRAYSIZE(m_pVertexArray));
+	hr = m_meshRenderer->Create(hwnd, m_pVertexArray, ARRAYSIZE(m_pVertexArray));
 
 	return S_OK;
 }
 
+void Triangle::Update()
+{
+	if (m_scale.x >= 0 && m_scale.x < 1.5f) {
+		m_scale.x += 0.01f;
+	}
+	else
+	{
+		m_scale.x = 0;
+	}
+
+	if (m_scale.y >= 0 && m_scale.y < 1.5f) {
+		m_scale.y += 0.01f;
+	}
+	else
+	{
+		m_scale.y = 0;
+	}
+
+}
+
 void Triangle::Render()
 {
-	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), m_pos);
+	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), m_pos, m_rotate, m_scale);
 }
 
 void Triangle::Release()
