@@ -1,7 +1,12 @@
 #include "stdafx.h"
 #include "Cube.h"
+#include "Input.h"
+
+#include <directxmath.h>
 
 using namespace Mesh;
+using namespace System;
+using namespace DirectX;
 
 #include "MeshRenderer.h"
 
@@ -34,6 +39,29 @@ void Cube::Update()
 	m_rotate.z += 0.01f;
 
 	
+	XMFLOAT3 trans = XMFLOAT3(0,0,0);
+
+	// 左キーが押されているとき
+	if (Input::instance->GetKey(DIK_LEFT)) {
+		trans.x += -0.01f;
+	}
+	// 右キーが押されているとき
+	else if(Input::instance->GetKey(DIK_RIGHT))
+	{
+		trans.x += 0.01f;
+	}
+
+	// 上キーが押されているとき
+	if (Input::instance->GetKey(DIK_UP)) {
+		trans.y += 0.01f;
+	}
+	// 右キーが押されているとき
+	else if (Input::instance->GetKey(DIK_DOWN))
+	{
+		trans.y += -0.01f;
+	}
+
+	Move(trans);
 }
 
 void Cube::Render()

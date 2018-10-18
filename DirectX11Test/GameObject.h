@@ -19,6 +19,9 @@ public:
 	virtual void    Render() = 0;
 	virtual void    Release() = 0;
 
+	void Move(DirectX::XMFLOAT3 movePos);
+	void SetPosition(DirectX::XMFLOAT3 pos);
+
 protected:
 	MeshRenderer* m_meshRenderer;
 };
