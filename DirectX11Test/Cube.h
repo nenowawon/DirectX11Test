@@ -1,10 +1,10 @@
 #pragma once
 
-#include "GameObject.h"
-#include "vertex.h"
+#include "MeshBase.h"
+
 
 namespace Mesh {
-	class Cube : public GameObject
+	class Cube : public MeshBase
 	{
 	public:
 		Cube();
@@ -46,7 +46,7 @@ namespace Mesh {
 
 		virtual HRESULT Create(HWND hwnd);
 		virtual void    Update();
-		virtual void    Render();
+		virtual void    Render(Transform* transform);
 		virtual void    Release();
 	};
 }

@@ -4,28 +4,34 @@
 
 using namespace DirectX;
 
-GameObject::GameObject():
-	m_meshRenderer(nullptr),
-	m_scale(1,1,1)
+GameObject::GameObject()
 {
-	m_pos = XMFLOAT3(0, 0, 0);
+	m_transform = new Transform();
+	m_transform->m_scale = XMFLOAT3(1, 1, 1);
 }
-
 
 GameObject::~GameObject()
 {
+	Release();
+}
+
+void GameObject::Release() 
+{
+	delete(m_transform);
 }
 
 void GameObject::Move(DirectX::XMFLOAT3 movePos)
 {
-	m_pos.x += movePos.x;
-	m_pos.y += movePos.y;
-	m_pos.z += movePos.z;
+	m_transform->m_pos.x += movePos.x;
+	
+	m_transform->m_pos.y += movePos.y;
+
+	m_transform->m_pos.z += movePos.z;
 }
 
 void GameObject::SetPosition(DirectX::XMFLOAT3 pos)
 {
-	m_pos = pos;
+	m_transform->m_pos = pos;
 }
 
 

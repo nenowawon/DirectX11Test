@@ -1,12 +1,12 @@
 #pragma once
 
 
-#include "GameObject.h"
+#include "MeshBase.h"
 
 #include "vertex.h"
 
 namespace Mesh {
-	class Triangle : public GameObject
+	class Triangle : public MeshBase
 	{
 
 	public:
@@ -21,7 +21,7 @@ namespace Mesh {
 
 		virtual HRESULT Create(HWND hwnd);
 		virtual void    Update();
-		virtual void    Render();
+		virtual void    Render(Transform* transform);
 		virtual void    Release();
 	};
 }

@@ -13,7 +13,7 @@ using namespace DirectX;
 
 Triangle::Triangle()
 {
-	m_pos = XMFLOAT3(1, 0, 0);
+	//m_pos = XMFLOAT3(1, 0, 0);
 }
 
 
@@ -36,7 +36,7 @@ HRESULT Triangle::Create(HWND hwnd)
 
 void Triangle::Update()
 {
-	if (m_scale.x >= 0 && m_scale.x < 1.5f) {
+	/*if (m_scale.x >= 0 && m_scale.x < 1.5f) {
 		m_scale.x += 0.01f;
 	}
 	else
@@ -50,13 +50,13 @@ void Triangle::Update()
 	else
 	{
 		m_scale.y = 0;
-	}
+	}*/
 
 }
 
-void Triangle::Render()
+void Triangle::Render(Transform* transform)
 {
-	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), m_pos, m_rotate, m_scale);
+	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), transform);
 }
 
 void Triangle::Release()

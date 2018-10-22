@@ -2,23 +2,24 @@
 #include "DirectXRenderer.h"
 #include <atltypes.h>
 
-// 図形クラス
-#include "Triangle.h"
-#include "Rectangle.h"
-#include "Cube.h"
+//// 図形クラス
+//#include "Triangle.h"
+//#include "Rectangle.h"
+//#include "Cube.h"
+
+#include "GameObject.h"
+
+#include "Player.h"
 
 #include <directxmath.h>
 
 #include "Camera.h"
 
-using namespace Mesh;
-
-//GameObject** g_triangle;
-
 GameObject* g_MeshArray[] = { 
-								new Triangle(),
+								/*new Triangle(),
 								new Mesh::Rectangle(),
-							    new Cube(),
+							    new Cube(),*/
+								new Player()
 							};
 
 DirectXRenderer* DirectXRenderer::instance = nullptr;
@@ -210,6 +211,4 @@ void DirectXRenderer::Release()
 	}
 
 	delete(m_camera);
-
-	//delete(g_triangle);
 }

@@ -130,25 +130,25 @@ HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount, int* 
 	return S_OK;
 }
 
-void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, DirectX::XMFLOAT3 rotate, DirectX::XMFLOAT3 scale)
+void MeshRenderer::Render(const int vertexCount, const Transform* transform)
 {
 	// デバイスコンテキストを取得する
 	ID3D11DeviceContext* pDeviceContext = DirectXRenderer::instance->m_pImmediateContext;
 
-	SetParamater(pDeviceContext, pos, rotate,scale);
+	SetParamater(pDeviceContext, transform);
 
 	pDeviceContext->Draw(vertexCount, 0);
 
 }
 
-void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, XMFLOAT3 rotate,XMFLOAT3 scale, int indexCount)
+void MeshRenderer::Render(const int vertexCount,const Transform* transform,const int indexCount)
 {
 	// デバイスコンテキストを取得する
 	ID3D11DeviceContext* pDeviceContext = DirectXRenderer::instance->m_pImmediateContext;
 
 	pDeviceContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-	SetParamater(pDeviceContext, pos, rotate,scale);
+	SetParamater(pDeviceContext, transform);
 
 	// 描画する
 	pDeviceContext->DrawIndexed(indexCount, 0, 0);
@@ -156,20 +156,20 @@ void MeshRenderer::Render(int vertexCount, XMFLOAT3 pos, XMFLOAT3 rotate,XMFLOAT
 }
 
 // 描画用のパラメーターをセットする
-void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext, XMFLOAT3 pos, XMFLOAT3 rotate, XMFLOAT3 scale)
+void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext, const Transform* transform)
 {
 
 	// ワールドマトリックス作成
 	XMMATRIX mat_trans, mat_rotate,mat_scale;
 
-	mat_trans = XMMatrixTranslation(pos.x, pos.y, pos.z);
+	mat_trans = XMMatrixTranslation(transform->m_pos.x, transform->m_pos.y, transform->m_pos.z);
 
+	// 回転処理
+	mat_rotate = XMMatrixRotationX(transform->m_rotate.x);
+	mat_rotate = XMMatrixMultiply(mat_rotate,XMMatrixRotationY(transform->m_rotate.y));
+	mat_rotate = XMMatrixMultiply(mat_rotate, XMMatrixRotationZ(transform->m_rotate.z));
 
-	mat_rotate = XMMatrixRotationX(rotate.x);
-	mat_rotate = XMMatrixMultiply(mat_rotate,XMMatrixRotationY(rotate.y));
-	mat_rotate = XMMatrixMultiply(mat_rotate, XMMatrixRotationZ(rotate.z));
-
-	mat_scale = XMMatrixScaling(scale.x, scale.y,scale.z);
+	mat_scale = XMMatrixScaling(transform->m_scale.x, transform->m_scale.y, transform->m_scale.z);
 
 	XMMATRIX worldMatrix = XMMatrixMultiply(mat_scale, mat_rotate);
 

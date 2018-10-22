@@ -32,21 +32,21 @@ HRESULT Rectangle::Create(HWND hwnd)
 
 void Rectangle::Update()
 {
-	if (m_pos.x <= 0 && m_pos.x > -1) {
-		//m_pos.x -= 0.01f;
-		Move(XMFLOAT3(-0.01f,0,0));
-	}
-	else
-	{
-		SetPosition(XMFLOAT3(0, 0, 0));
-	}
+	//if (m_pos.x <= 0 && m_pos.x > -1) {
+	//	//m_pos.x -= 0.01f;
+	//	Move(XMFLOAT3(-0.01f,0,0));
+	//}
+	//else
+	//{
+	//	SetPosition(XMFLOAT3(0, 0, 0));
+	//}
 
 	//m_rotate.y -= 0.5f;
 }
 
-void Rectangle::Render()
+void Rectangle::Render(Transform* transform)
 {
-	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), m_pos, m_rotate,m_scale, ARRAYSIZE(m_IndexArray));
+	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), transform, ARRAYSIZE(m_IndexArray));
 
 }
 
