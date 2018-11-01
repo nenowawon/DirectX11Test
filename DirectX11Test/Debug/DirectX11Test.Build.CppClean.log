@@ -1,7 +1,5 @@
-e:\ko tm\c++\directx11test\directx11test\debug\directx11test.pch
 e:\ko tm\c++\directx11test\directx11test\debug\vc141.pdb
 e:\ko tm\c++\directx11test\directx11test\debug\vc141.idb
-e:\ko tm\c++\directx11test\directx11test\debug\stdafx.obj
 e:\ko tm\c++\directx11test\directx11test\debug\vertex.obj
 e:\ko tm\c++\directx11test\directx11test\debug\triangle.obj
 e:\ko tm\c++\directx11test\directx11test\debug\rectangle.obj
@@ -12,12 +10,17 @@ e:\ko tm\c++\directx11test\directx11test\debug\directxrenderer.obj
 e:\ko tm\c++\directx11test\directx11test\debug\directx11test.obj
 e:\ko tm\c++\directx11test\directx11test\debug\cube.obj
 e:\ko tm\c++\directx11test\directx11test\debug\camera.obj
+e:\ko tm\c++\directx11test\directx11test\debug\transform.obj
+e:\ko tm\c++\directx11test\directx11test\debug\meshbase.obj
+e:\ko tm\c++\directx11test\directx11test\debug\player.obj
+e:\ko tm\c++\directx11test\directx11test\debug\directx11test.pch
+e:\ko tm\c++\directx11test\directx11test\debug\stdafx.obj
 e:\ko tm\c++\directx11test\directx11test\shaderheader\ps_test.h
 e:\ko tm\c++\directx11test\debug\ps_test.cso
 e:\ko tm\c++\directx11test\directx11test\shaderheader\vs_test.h
 e:\ko tm\c++\directx11test\debug\vs_test.cso
-e:\ko tm\c++\directx11test\debug\directx11test.ilk
 e:\ko tm\c++\directx11test\debug\directx11test.exe
+e:\ko tm\c++\directx11test\debug\directx11test.ilk
 e:\ko tm\c++\directx11test\debug\directx11test.pdb
 e:\ko tm\c++\directx11test\directx11test\debug\directx11test.res
 e:\ko tm\c++\directx11test\directx11test\debug\directx11test.tlog\cl.command.1.tlog

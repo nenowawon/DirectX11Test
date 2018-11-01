@@ -15,7 +15,7 @@
 
 #include "Camera.h"
 
-GameObject* g_MeshArray[] = { 
+GameObject* g_gameObjectArray[] = { 
 								/*new Triangle(),
 								new Mesh::Rectangle(),
 							    new Cube(),*/
@@ -133,7 +133,7 @@ HRESULT DirectXRenderer::Create(HWND hwnd)
 	m_camera = new Camera();
 
 	// 図形を作成する
-	for (auto mesh : g_MeshArray) {
+	for (auto mesh : g_gameObjectArray) {
 		mesh->Create(hwnd);
 	}
 
@@ -152,9 +152,9 @@ HRESULT DirectXRenderer::Create(HWND hwnd)
 
 void DirectXRenderer::Update() 
 {
-	for (auto mesh : g_MeshArray) {
+	for (auto gameObject : g_gameObjectArray) {
 		// 図形の更新処理
-		mesh->Update();
+		gameObject->Update();
 	}
 }
 
@@ -175,7 +175,7 @@ void DirectXRenderer::Render()
 	//// ラスタライザステートをセットする
 	//m_pImmediateContext->RSSetState(m_pRasterizerState);
 
-	for (auto mesh : g_MeshArray) {
+	for (auto mesh : g_gameObjectArray) {
 		// 図形を描画する
 		mesh->Render();
 	}
@@ -206,7 +206,7 @@ void DirectXRenderer::Release()
 	}
 
 	// 図形を開放する
-	for (auto mesh : g_MeshArray) {
+	for (auto mesh : g_gameObjectArray) {
 		delete(mesh);
 	}
 

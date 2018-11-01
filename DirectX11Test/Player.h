@@ -18,5 +18,9 @@ public:
 
 private:
 	Mesh::MeshBase* m_mesh;
+
+	ID3D11Resource* m_pTexture;
+
+	ID3D11ShaderResourceView* m_pTextureView;
 };
 

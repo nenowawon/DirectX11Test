@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>e:\ko tm\c++\directx11test\directx11test\</FILEPATH>
+      <FILENAME>meshrenderer.cpp</FILENAME>
+      <LINE>20</LINE>
+      <COLUMN>14</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'MeshRenderer::m_VertexDesc' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>MeshRenderer::{ctor}</FUNCTION>
+    <DECORATED>??0MeshRenderer@@QAE@XZ</DECORATED>
+    <FUNCLINE>20</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>e:\ko tm\c++\directx11test\directx11test\</FILEPATH>
+      <FILENAME>meshrenderer.cpp</FILENAME>
+      <LINE>20</LINE>
+      <COLUMN>14</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'MeshRenderer::m_Viewport' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>MeshRenderer::{ctor}</FUNCTION>
+    <DECORATED>??0MeshRenderer@@QAE@XZ</DECORATED>
+    <FUNCLINE>20</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>e:\ko tm\c++\directx11test\directx11test\</FILEPATH>
+      <FILENAME>meshrenderer.cpp</FILENAME>
+      <LINE>101</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>6216</DEFECTCODE>
+    <DESCRIPTION>意味の異なる整数型の間でのコンパイラ挿入されたキャストです: ブール型から HRESULT。</DESCRIPTION>
+    <FUNCTION>MeshRenderer::Create</FUNCTION>
+    <DECORATED>?Create@MeshRenderer@@UAEJPAUHWND__@@PAUVertex@@H@Z</DECORATED>
+    <FUNCLINE>37</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>e:\ko tm\c++\directx11test\directx11test\</FILEPATH>
+      <FILENAME>meshrenderer.cpp</FILENAME>
+      <LINE>185</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>26498</DEFECTCODE>
+    <DESCRIPTION>The function 'DirectX::XMConvertToRadians' is constexpr, mark variable 'fov' constexpr if compile-time evaluation is desired (con.5).</DESCRIPTION>
+    <FUNCTION>MeshRenderer::SetParamater</FUNCTION>
+    <DECORATED>?SetParamater@MeshRenderer@@UAEXPAUID3D11DeviceContext@@PBUTransform@@@Z</DECORATED>
+    <FUNCLINE>159</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -86,7 +86,7 @@ HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount)
 	m_Viewport.MinDepth = 0.0f;
 	m_Viewport.MaxDepth = 1.0f;
 
-	//定数バッファを作成する
+	// 定数バッファを作成する
 	D3D11_BUFFER_DESC cbDesc;
 	cbDesc.ByteWidth = sizeof(ConstantBuffer);
 	cbDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -98,7 +98,7 @@ HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount)
 	hr = pDevice->CreateBuffer(&cbDesc, NULL, &m_pConstantBuffer);
 	if (FAILED(hr)) return hr;
 
-	return true;
+	return S_OK;
 }
 
 HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount, int* p_index, int indexCount)
@@ -176,7 +176,7 @@ void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext, const Trans
 	worldMatrix = XMMatrixMultiply(worldMatrix,mat_trans);
 
 	// ビューマトリックス作成
-	XMVECTOR eye = XMVectorSet(0.0f, 1.0f, -2.0f, 0.0f);
+	XMVECTOR eye = XMVectorSet(0.0f, 0.0f, -2.0f, 0.0f);
 	XMVECTOR focus = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	XMMATRIX viewMatrix = XMMatrixLookAtLH(eye, focus, up);
