@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-#include "MeshBase.h"
+#include "Sprite.h"
 //class MeshBase;
 
 class Player : public GameObject
@@ -17,10 +17,6 @@ public:
 	void    Release();
 
 private:
-	Mesh::MeshBase* m_mesh;
-
-	ID3D11Resource* m_pTexture;
-
-	ID3D11ShaderResourceView* m_pTextureView;
+	Mesh::Sprite* m_pSprite;
 };
 

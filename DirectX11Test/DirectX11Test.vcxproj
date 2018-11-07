@@ -158,14 +158,17 @@
     <ClInclude Include="DirectX11Test.h" />
     <ClInclude Include="DirectXRenderer.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="ImageRenderer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MeshBase.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="MeshTest.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ShaderHeader\ps_test.h" />
     <ClInclude Include="ShaderHeader\vs_test.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Transform.h" />
@@ -178,11 +181,14 @@
     <ClCompile Include="DirectX11Test.cpp" />
     <ClCompile Include="DirectXRenderer.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImageRenderer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MeshBase.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="MeshTest.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -213,6 +219,13 @@
       <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">g_ps_main</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\ShaderHeader\%(Filename).h</HeaderFileOutput>
     </FxCompile>
+    <FxCompile Include="..\Shader\ps_tex.psh">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ps_main</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">g_ps_main</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\ShaderHeader\%(Filename).h</HeaderFileOutput>
+    </FxCompile>
     <FxCompile Include="..\Shader\vs_test.vsh">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">vs_main</EntryPointName>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
@@ -223,6 +236,13 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">vs_main</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\ShaderHeader\%(Filename).h</HeaderFileOutput>
+    </FxCompile>
+    <FxCompile Include="..\Shader\vs_tex.vsh">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">vs_main</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">g_vs_main</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\ShaderHeader\%(Filename).h</HeaderFileOutput>
     </FxCompile>
   </ItemGroup>

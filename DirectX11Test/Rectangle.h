@@ -1,20 +1,23 @@
 #pragma once
 
 #include "MeshBase.h"
-#include "vertex.h"
+//#include "vertex.h"
 
-namespace Mesh {
+namespace Mesh 
+{
 	class Rectangle : public MeshBase
 	{
 	public:
 		Rectangle();
 		~Rectangle();
 
+		float const oneSide = 0.5f;
+
 		Vertex m_pVertexArray[4] = {
-			{ { -0.5f,  0.5f, 0.5f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-			{ {  0.5f, -0.5f, 0.5f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
-			{ { -0.5f, -0.5f, 0.5f }, { 0.0f, 0.0f, 1.0f, 1.0f } },
-			{ {  0.5f,  0.5f, 0.5f }, { 1.0f, 1.0f, 0.0f, 1.0f } },
+			{ { -oneSide,  oneSide, oneSide }, { 1.0f, 0.0f, 0.0f, 1.0f } },
+			{ {  oneSide, -oneSide, oneSide }, { 0.0f, 1.0f, 0.0f, 1.0f } },
+			{ { -oneSide, -oneSide, oneSide }, { 0.0f, 0.0f, 1.0f, 1.0f } },
+			{ {  oneSide,  oneSide, oneSide }, { 1.0f, 1.0f, 0.0f, 1.0f } },
 		};
 
 		int m_IndexArray[6]{

@@ -5,14 +5,10 @@
 
 #include <directxmath.h>
 
-#include "Cube.h"
-#include "Rectangle.h"
+//#include "Cube.h"
+//#include "Rectangle.h"
 
-#include <DirectXTex.h>
-#include <DDSTextureLoader.h>
-#include <WICTextureLoader.h>
-
-#include <WICTextureLoader.cpp>
+#include "Sprite.h"
 
 #include "DirectXRenderer.h"
 
@@ -23,7 +19,7 @@ using namespace Mesh;
 using namespace DirectX;
 
 Player::Player():
-	m_mesh(nullptr)
+	m_pSprite(nullptr)
 {
 	
 }
@@ -37,17 +33,9 @@ HRESULT Player::Create(HWND hwnd)
 {
 	HRESULT hr;
 
-	m_mesh = new Mesh::Rectangle();
+	m_pSprite = new Mesh::Sprite();
 
-	hr = m_mesh->Create(hwnd);
-
-	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
-
-	//テクスチャ読み込み
-	hr = CreateWICTextureFromFile(pDevice, _T("Image/sample.jpg"), &m_pTexture, &m_pTextureView);
-	if (FAILED(hr))
-		return hr;
-
+	hr = m_pSprite->Create(hwnd,"Image/sample.jpg");
 
 	return hr;
 }
@@ -60,26 +48,28 @@ void Player::Update()
 	
 	XMFLOAT3 trans = XMFLOAT3(0,0,0);
 
+	float moveSpeed = 0.01f;
+
 	// 左キーが押されているとき
 	if (Input::instance->GetKey(DIK_LEFT)) 
 	{
-		trans.x += -0.01f;
+		trans.x += -moveSpeed;
 	}
 	// 右キーが押されているとき
 	else if(Input::instance->GetKey(DIK_RIGHT))
 	{
-		trans.x += 0.01f;
+		trans.x += moveSpeed;
 	}
 
 	// 上キーが押されているとき
 	if (Input::instance->GetKey(DIK_UP)) 
 	{
-		trans.y += 0.01f;
+		trans.y += moveSpeed;
 	}
 	// 下キーが押されているとき
 	else if (Input::instance->GetKey(DIK_DOWN))
 	{
-		trans.y += -0.01f;
+		trans.y += -moveSpeed;
 	}
 
 	Move(trans);
@@ -87,11 +77,11 @@ void Player::Update()
 
 void Player::Render()
 {
-	m_mesh->Render(m_transform);
+	m_pSprite->Render(m_transform);
 
 }
 
 void Player::Release()
 {
-	delete(m_mesh);
+	delete(m_pSprite);
 }

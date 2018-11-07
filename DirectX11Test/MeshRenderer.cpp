@@ -10,7 +10,6 @@
 
 using namespace DirectX;
 
-
 struct ConstantBuffer {
 	XMFLOAT4X4 world;
 	XMFLOAT4X4 view;
@@ -38,94 +37,34 @@ HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount)
 {
 	HRESULT hr;
 
-	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
+	CreateRenderer(hwnd);
 
-	// 頂点バッファ作成
-	D3D11_BUFFER_DESC bufferDesc;
-	bufferDesc.ByteWidth = sizeof(Vertex) * vertexCount;
-	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.CPUAccessFlags = 0;
-	bufferDesc.MiscFlags = 0;
-	bufferDesc.StructureByteStride = 0;
+	CreateVertexBuffer(p_vertex, vertexCount);
 
-	D3D11_SUBRESOURCE_DATA subResourceData;
-	subResourceData.pSysMem = p_vertex;
-	subResourceData.SysMemPitch = 0;
-	subResourceData.SysMemSlicePitch = 0;
+	CreateShaderObject();
 
-	hr = pDevice->CreateBuffer(&bufferDesc, &subResourceData, &m_pVertexBuffer);
-	if (FAILED(hr))
-		return hr;
-
-	// シェーダーのインプットレイアウト作成
-	hr = pDevice->CreateInputLayout(m_VertexDesc, ARRAYSIZE(m_VertexDesc),
-		g_vs_main, sizeof(g_vs_main),
-		&m_pInputLayout);
-	if (FAILED(hr))
-		return hr;
-
-	// 頂点シェーダーオブジェクトを作成する
-	hr = pDevice->CreateVertexShader(&g_vs_main, sizeof(g_vs_main), NULL, &m_pVertexShader);
-	if (FAILED(hr))
-		return hr;
-
-	// ピクセルシェーダーオブジェクトを作成する
-	hr = pDevice->CreatePixelShader(&g_ps_main, sizeof(g_ps_main), NULL, &m_pPixelShader);
-	if (FAILED(hr))
-		return hr;
-
-	// ビューポートを作成する
-	CRect  rect;
-
-	::GetClientRect(hwnd, &rect);
-	m_Viewport.TopLeftX = 0;
-	m_Viewport.TopLeftY = 0;
-	m_Viewport.Width = (FLOAT)rect.Width();
-	m_Viewport.Height = (FLOAT)rect.Height();
-	m_Viewport.MinDepth = 0.0f;
-	m_Viewport.MaxDepth = 1.0f;
-
-	// 定数バッファを作成する
-	D3D11_BUFFER_DESC cbDesc;
-	cbDesc.ByteWidth = sizeof(ConstantBuffer);
-	cbDesc.Usage = D3D11_USAGE_DEFAULT;
-	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbDesc.CPUAccessFlags = 0;
-	cbDesc.MiscFlags = 0;
-	cbDesc.StructureByteStride = 0;
-
-	hr = pDevice->CreateBuffer(&cbDesc, NULL, &m_pConstantBuffer);
-	if (FAILED(hr)) return hr;
+	// インプットレイアウトを作成する
+	CreateShaderInput(m_VertexDesc);
+	
 
 	return S_OK;
 }
 
 HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount, int* p_index, int indexCount)
 {
-	HRESULT hr;
+	
 
-	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
+	// 描画デバイス作成
+	CreateRenderer(hwnd);
 
-	hr = Create(hwnd, p_vertex, vertexCount);
+	CreateVertexBuffer(p_vertex, vertexCount);
 
-	D3D11_BUFFER_DESC ibDesc;
-	ibDesc.ByteWidth = sizeof(int) * indexCount;
-	ibDesc.Usage = D3D11_USAGE_DEFAULT;
-	ibDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibDesc.CPUAccessFlags = 0;
-	ibDesc.MiscFlags = 0;
-	ibDesc.StructureByteStride = 0;
+	// インプットレイアウトを作成する
+	CreateShaderInput(m_VertexDesc);
 
-	D3D11_SUBRESOURCE_DATA irData;
+	CreateShaderObject();
 
-	irData.pSysMem = p_index;
-	irData.SysMemPitch = 0;
-	irData.SysMemSlicePitch = 0;
-
-	hr = pDevice->CreateBuffer(&ibDesc, &irData, &m_pIndexBuffer);
-
-	if (FAILED(hr)) { return hr; }
+	CreateIndex(p_index, indexCount);
 
 	return S_OK;
 }
@@ -194,7 +133,7 @@ void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext, const Trans
 	XMStoreFloat4x4(&cb.projection, XMMatrixTranspose(projMatrix));
 	pDeviceContext->UpdateSubresource(m_pConstantBuffer, 0, NULL, &cb, 0, 0);
 
-	UINT strides = sizeof(Vertex);
+	UINT strides = sizeof(ImageVertex);
 	UINT offsets = 0;
 	// インプットレイアウトをセット
 	pDeviceContext->IASetInputLayout(m_pInputLayout);
@@ -208,7 +147,101 @@ void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext, const Trans
 	pDeviceContext->PSSetShader(m_pPixelShader, NULL, 0);
 }
 
+void MeshRenderer::CreateShaderObject()
+{
+	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
+
+	// 頂点シェーダーオブジェクトを作成する
+	pDevice->CreateVertexShader(&g_vs_main, sizeof(g_vs_main), NULL, &m_pVertexShader);
+
+	// ピクセルシェーダーオブジェクトを作成する
+	pDevice->CreatePixelShader(&g_ps_main, sizeof(g_ps_main), NULL, &m_pPixelShader);
+}
+
 void MeshRenderer::Release()
 {
 
 }
+
+void MeshRenderer::CreateShaderInput(D3D11_INPUT_ELEMENT_DESC* vertexDesc)
+{
+	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
+
+	// シェーダーのインプットレイアウト作成
+	pDevice->CreateInputLayout(vertexDesc, ARRAYSIZE(m_VertexDesc),
+		g_vs_main, sizeof(g_vs_main),
+		&m_pInputLayout);
+}
+
+void MeshRenderer::CreateIndex(int * p_index, int indexCount)
+{
+
+	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
+
+	D3D11_BUFFER_DESC ibDesc;
+	ibDesc.ByteWidth = sizeof(int) * indexCount;
+	ibDesc.Usage = D3D11_USAGE_DEFAULT;
+	ibDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibDesc.CPUAccessFlags = 0;
+	ibDesc.MiscFlags = 0;
+	ibDesc.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA irData;
+
+	irData.pSysMem = p_index;
+	irData.SysMemPitch = 0;
+	irData.SysMemSlicePitch = 0;
+
+	pDevice->CreateBuffer(&ibDesc, &irData, &m_pIndexBuffer);
+}
+
+void MeshRenderer::CreateRenderer(HWND hwnd)
+{
+
+	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
+
+	// ビューポートを作成する
+	CRect  rect;
+
+	::GetClientRect(hwnd, &rect);
+	m_Viewport.TopLeftX = 0;
+	m_Viewport.TopLeftY = 0;
+	m_Viewport.Width = (FLOAT)rect.Width();
+	m_Viewport.Height = (FLOAT)rect.Height();
+	m_Viewport.MinDepth = 0.0f;
+	m_Viewport.MaxDepth = 1.0f;
+
+	// 定数バッファを作成する
+	D3D11_BUFFER_DESC cbDesc;
+	cbDesc.ByteWidth = sizeof(ConstantBuffer);
+	cbDesc.Usage = D3D11_USAGE_DEFAULT;
+	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbDesc.CPUAccessFlags = 0;
+	cbDesc.MiscFlags = 0;
+	cbDesc.StructureByteStride = 0;
+
+	pDevice->CreateBuffer(&cbDesc, NULL, &m_pConstantBuffer);
+}
+
+void MeshRenderer::CreateVertexBuffer(Vertex * p_vertex, int vertexCount)
+{
+	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
+
+	// 頂点バッファ作成
+	D3D11_BUFFER_DESC bufferDesc;
+	bufferDesc.ByteWidth = sizeof(*p_vertex) * vertexCount;
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bufferDesc.CPUAccessFlags = 0;
+	bufferDesc.MiscFlags = 0;
+	bufferDesc.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA subResourceData;
+	subResourceData.pSysMem = p_vertex;
+	subResourceData.SysMemPitch = 0;
+	subResourceData.SysMemSlicePitch = 0;
+
+	pDevice->CreateBuffer(&bufferDesc, &subResourceData, &m_pVertexBuffer);
+}
+
+

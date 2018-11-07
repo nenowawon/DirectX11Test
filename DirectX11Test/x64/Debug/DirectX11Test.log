@@ -1,2 +1,5 @@
-﻿  Player.cpp
+﻿  DirectXRenderer.cpp
+  Player.cpp
+  Sprite.cpp
+  コードを生成中...
   DirectX11Test.vcxproj -> E:\KO tm\C++\DirectX11Test\x64\Debug\DirectX11Test.exe

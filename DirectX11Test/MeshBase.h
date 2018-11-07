@@ -15,12 +15,15 @@ namespace Mesh
 		MeshBase();
 		~MeshBase();
 
-		virtual HRESULT Create(HWND hwnd) = 0;
+		virtual HRESULT Create(HWND hwnd);
 		virtual void    Update() = 0;
 		virtual void    Render(Transform* transform) = 0;
 		virtual void    Release() = 0;
 
 	protected:
+
+		//Vertex m_pVertexArray[4];
+
 		MeshRenderer* m_meshRenderer;
 	};
 }

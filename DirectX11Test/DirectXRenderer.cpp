@@ -11,6 +11,8 @@
 
 #include "Player.h"
 
+#include "MeshTest.h"
+
 #include <directxmath.h>
 
 #include "Camera.h"
@@ -19,7 +21,8 @@ GameObject* g_gameObjectArray[] = {
 								/*new Triangle(),
 								new Mesh::Rectangle(),
 							    new Cube(),*/
-								new Player()
+								new Player(),
+								//new MeshTest(),
 							};
 
 DirectXRenderer* DirectXRenderer::instance = nullptr;
@@ -165,7 +168,7 @@ void DirectXRenderer::Render()
 	if (NULL == m_pRenderTargetView) return;
 	if (NULL == m_pSwapChain) return;
 
-	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
+	float clearColor[4] = { 1.0f, 1.0f, 0.0f, 1.0f }; //red,green,blue,alpha
 
 	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
 	// ‰æ–Ê‚ğƒNƒŠƒA‚·‚é

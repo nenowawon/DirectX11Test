@@ -14,6 +14,13 @@ MeshBase::~MeshBase()
 	Release();
 }
 
+HRESULT Mesh::MeshBase::Create(HWND hwnd)
+{
+	return E_NOTIMPL;
+}
+
+
+
 void MeshBase::Release() 
 {
 	delete(m_meshRenderer);
