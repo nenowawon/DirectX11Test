@@ -34,5 +34,10 @@ void GameObject::SetPosition(DirectX::XMFLOAT3 pos)
 	m_transform->m_pos = pos;
 }
 
+void GameObject::RotateZ(float angle)
+{
+	m_transform->m_rotate.z += angle;
+}
+
 
 

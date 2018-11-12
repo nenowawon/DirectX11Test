@@ -11,7 +11,7 @@ namespace Mesh
 		Rectangle();
 		~Rectangle();
 
-		float const oneSide = 0.5f;
+		float const oneSide = 0.25f;
 
 		Vertex m_pVertexArray[4] = {
 			{ { -oneSide,  oneSide, oneSide }, { 1.0f, 0.0f, 0.0f, 1.0f } },

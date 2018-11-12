@@ -5,12 +5,13 @@
 
 #include "Cube.h"
 #include "Rectangle.h"
-
+#include "Triangle.h"
 //#include "Sprite.h"
+#include "Triangle.h"
 
 #include "DirectXRenderer.h"
 
-//#include "Triangle.h"
+
 
 using namespace Mesh;
 using namespace DirectX;
@@ -30,7 +31,7 @@ HRESULT MeshTest::Create(HWND hwnd)
 {
 	HRESULT hr;
 
-	m_pMesh = new Mesh::Cube();
+	m_pMesh = new Mesh::Rectangle();
 
 	hr = m_pMesh->Create(hwnd);
 

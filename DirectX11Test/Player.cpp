@@ -72,6 +72,8 @@ void Player::Update()
 		trans.y += -moveSpeed;
 	}
 
+	//RotateZ(-0.05f);
+
 	Move(trans);
 }
 

@@ -12,6 +12,10 @@
 #include "ShaderHeader/ps_tex.h"
 #include "ShaderHeader/vs_tex.h"
 
+#include <stdIO.h>
+#include <stdlib.h>
+//#include <local.h>
+
 ImageRenderer::ImageRenderer()
 {
 }
@@ -23,6 +27,8 @@ ImageRenderer::~ImageRenderer()
 
 HRESULT ImageRenderer::Create(HWND hwnd, ImageVertex * p_vertex, int vertexCount, int * p_index, int indexCount)
 {
+
+	m_vertexSize = sizeof(*p_vertex);
 
 	// 描画デバイス作成
 	CreateRenderer(hwnd);
@@ -80,6 +86,10 @@ void ImageRenderer::CreateImage(std::string filePath)
 	HRESULT hr;
 
 	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
+
+	/*wchar_t* char_ptr;
+
+	std::mbstowcs(char_ptr,filePath.c_str,15);*/
 
 	//テクスチャ読み込み
 	hr = CreateWICTextureFromFile(pDevice, _T("Image/sample.jpg"), &m_pTexture, &m_pTextureView);

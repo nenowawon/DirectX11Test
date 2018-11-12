@@ -19,5 +19,7 @@ public:
 
 	void Move(DirectX::XMFLOAT3 movePos);
 	void SetPosition(DirectX::XMFLOAT3 pos);
+
+	void RotateZ(float angle);
 };
 

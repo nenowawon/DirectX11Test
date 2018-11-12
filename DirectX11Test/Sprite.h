@@ -13,13 +13,13 @@ namespace Mesh
 		Sprite();
 		~Sprite();
 
-		float const oneSide = 0.5f;
+		float const oneSide = 0.25f;
 
 		ImageVertex m_pVertexArray[4] = {
-			{ { -oneSide,  oneSide, oneSide }, { 1.0f, 0.0f, 0.0f, 1.0f } ,{0.0f,1.0f}},
-			{ {  oneSide, -oneSide, oneSide }, { 0.0f, 1.0f, 0.0f, 1.0f } ,{1.0f,0.0f}},
-			{ { -oneSide, -oneSide, oneSide }, { 0.0f, 0.0f, 1.0f, 1.0f } ,{0.0f,0.0f}},
-			{ {  oneSide,  oneSide, oneSide }, { 1.0f, 1.0f, 0.0f, 1.0f } ,{1.0f,1.0f}},
+			{ { -oneSide,  oneSide, oneSide }, { 1.0f, 0.0f, 0.0f, 1.0f } ,{0.0f,0.0f}},
+			{ {  oneSide, -oneSide, oneSide }, { 0.0f, 1.0f, 0.0f, 1.0f } ,{1.0f,1.0f}},
+			{ { -oneSide, -oneSide, oneSide }, { 0.0f, 0.0f, 1.0f, 1.0f } ,{0.0f,1.0f}},
+			{ {  oneSide,  oneSide, oneSide }, { 1.0f, 1.0f, 0.0f, 1.0f } ,{1.0f,0.0f}},
 		};
 
 		int m_IndexArray[6]{

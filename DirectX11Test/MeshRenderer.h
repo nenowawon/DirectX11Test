@@ -32,6 +32,8 @@ protected:
 
 	void CreateVertexBuffer(Vertex* p_vertex, int vertexCount);
 
+	UINT m_vertexSize;
+
 	ID3D11Buffer*           m_pVertexBuffer;
 	ID3D11Buffer*           m_pIndexBuffer;
 

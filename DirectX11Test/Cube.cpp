@@ -25,7 +25,7 @@ HRESULT Cube::Create(HWND hwnd)
 
 	hr = m_meshRenderer->Create(hwnd, m_pVertexArray, ARRAYSIZE(m_pVertexArray), m_IndexArray, ARRAYSIZE(m_IndexArray));
 
-	return S_OK;
+	return hr;
 }
 
 void Cube::Update()
@@ -35,8 +35,9 @@ void Cube::Update()
 
 void Cube::Render(Transform* transform)
 {
-
 	m_meshRenderer->Render(ARRAYSIZE(m_pVertexArray), transform, ARRAYSIZE(m_IndexArray));
+
+	m_meshRenderer = m_meshRenderer;
 }
 
 void Cube::Release()

@@ -35,7 +35,9 @@ MeshRenderer::~MeshRenderer()
 
 HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount)
 {
-	HRESULT hr;
+	//HRESULT hr;
+
+	m_vertexSize = sizeof(*p_vertex);
 
 	CreateRenderer(hwnd);
 
@@ -53,6 +55,7 @@ HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount)
 HRESULT MeshRenderer::Create(HWND hwnd, Vertex* p_vertex, int vertexCount, int* p_index, int indexCount)
 {
 	
+	m_vertexSize = sizeof(*p_vertex);
 
 	// 描画デバイス作成
 	CreateRenderer(hwnd);
@@ -133,12 +136,12 @@ void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext, const Trans
 	XMStoreFloat4x4(&cb.projection, XMMatrixTranspose(projMatrix));
 	pDeviceContext->UpdateSubresource(m_pConstantBuffer, 0, NULL, &cb, 0, 0);
 
-	UINT strides = sizeof(ImageVertex);
+	//UINT strides = sizeof(ImageVertex);
 	UINT offsets = 0;
 	// インプットレイアウトをセット
 	pDeviceContext->IASetInputLayout(m_pInputLayout);
 	// 頂点バッファをセット
-	pDeviceContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &strides, &offsets);
+	pDeviceContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &m_vertexSize, &offsets);
 	pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// 定数バッファをセット
 	pDeviceContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);

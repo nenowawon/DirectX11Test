@@ -10,7 +10,7 @@ namespace Mesh {
 		Cube();
 		~Cube();
 
-		float const oneSide = 0.3f;
+		float const oneSide = 0.2f;
 
 		Vertex m_pVertexArray[8] = {
 			{ { -oneSide, -oneSide,  oneSide }, { 0.0f, 1.0f, 0.0f, 1.0f } },
@@ -18,10 +18,10 @@ namespace Mesh {
 			{ {  oneSide, -oneSide, -oneSide }, { 0.0f, 0.0f, 1.0f, 1.0f } },
 			{ { -oneSide, -oneSide, -oneSide }, { 0.0f, 0.0f, 1.0f, 1.0f } },
 
-			{ { -oneSide,  oneSide,  oneSide }, { 0.0f, 1.0f, 1.0f, 1.0f } },
+			{ { -oneSide,  oneSide,  oneSide }, { 1.0f, 1.0f, 1.0f, 1.0f } },
 			{ {  oneSide,  oneSide,  oneSide }, { 0.0f, 1.0f, 1.0f, 1.0f } },
-			{ {  oneSide,  oneSide, -oneSide }, { 0.0f, 1.0f, 1.0f, 1.0f } },
-			{ { -oneSide,  oneSide, -oneSide }, { 0.0f, 1.0f, 1.0f, 1.0f } },
+			{ {  oneSide,  oneSide, -oneSide }, { 1.0f, 0.0f, 0.0f, 1.0f } },
+			{ { -oneSide,  oneSide, -oneSide }, { 0.0f, 1.0f, 0.0f, 1.0f } },
 		};
 
 		int m_IndexArray[36]{
