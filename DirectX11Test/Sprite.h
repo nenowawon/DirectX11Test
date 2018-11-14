@@ -13,7 +13,7 @@ namespace Mesh
 		Sprite();
 		~Sprite();
 
-		float const oneSide = 0.25f;
+		float const oneSide = 0.1f;
 
 		ImageVertex m_pVertexArray[4] = {
 			{ { -oneSide,  oneSide, oneSide }, { 1.0f, 0.0f, 0.0f, 1.0f } ,{0.0f,0.0f}},
@@ -28,7 +28,7 @@ namespace Mesh
 		};
 		
 
-		virtual HRESULT Create(HWND hwnd,std::string filePath);
+		virtual HRESULT Create(HWND hwnd,std::string* fileName);
 		virtual void    Update();
 		virtual void    Render(Transform* transform);
 		virtual void    Release();

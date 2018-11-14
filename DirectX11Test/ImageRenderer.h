@@ -17,7 +17,7 @@ public:
 
 	virtual void    Render(const int vertexCount, const Transform* transform, const int indexCount);
 
-	void CreateImage(std::string filePath);
+	void CreateImage(std::string* fileName);
 
 	void CreateVertexBuffer(ImageVertex* p_vertex, int vertexCount);
 

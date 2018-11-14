@@ -2,27 +2,25 @@
 #include "DirectXRenderer.h"
 #include <atltypes.h>
 
-//// ê}å`ÉNÉâÉX
-//#include "Triangle.h"
-//#include "Rectangle.h"
-//#include "Cube.h"
-
 #include "GameObject.h"
 
 #include "Player.h"
-
 #include "MeshTest.h"
+#include "SpriteTest.h"
 
 #include <directxmath.h>
 
 #include "Camera.h"
 
 GameObject* g_gameObjectArray[] = { 
-								/*new Triangle(),
-								new Mesh::Rectangle(),
-							    new Cube(),*/
 								new Player(),
 								new MeshTest(),
+								
+								/*new Player(0.5f,0.0f,0.0f),
+								new Player(-0.5f,0.0f,0.0f),*/
+								new SpriteTest(-0.5f,-0.5f,0.0f),
+								new SpriteTest(0.5f,-0.5f,0.0f),
+								new SpriteTest(0.0f,-0.5f,0.0f),
 							};
 
 DirectXRenderer* DirectXRenderer::instance = nullptr;

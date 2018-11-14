@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DirectX11Test.h" />
     <ClInclude Include="DirectXRenderer.h" />
@@ -165,10 +166,12 @@
     <ClInclude Include="MeshTest.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="RectangleCollider.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ShaderHeader\ps_test.h" />
     <ClInclude Include="ShaderHeader\vs_test.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Transform.h" />
@@ -177,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DirectX11Test.cpp" />
     <ClCompile Include="DirectXRenderer.cpp" />
@@ -188,7 +192,9 @@
     <ClCompile Include="MeshTest.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="RectangleCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

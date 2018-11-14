@@ -19,7 +19,7 @@ Sprite::~Sprite()
 	Release();
 }
 
-HRESULT Sprite::Create(HWND hwnd, std::string filePath)
+HRESULT Sprite::Create(HWND hwnd, std::string* fileName)
 {
 	HRESULT hr;
 
@@ -28,7 +28,7 @@ HRESULT Sprite::Create(HWND hwnd, std::string filePath)
 
 	hr = m_pImageRenderer->Create(hwnd, m_pVertexArray, ARRAYSIZE(m_pVertexArray), m_IndexArray, ARRAYSIZE(m_IndexArray));
 
-	m_pImageRenderer->CreateImage(filePath);
+	m_pImageRenderer->CreateImage(fileName);
 	
 	if (FAILED(hr))
 		return hr;

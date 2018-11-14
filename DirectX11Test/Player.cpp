@@ -5,21 +5,17 @@
 
 #include <directxmath.h>
 
-//#include "Cube.h"
-//#include "Rectangle.h"
-
 #include "Sprite.h"
 
 #include "DirectXRenderer.h"
-
-//#include "Triangle.h"
 
 using namespace System;
 using namespace Mesh;
 using namespace DirectX;
 
 Player::Player():
-	m_pSprite(nullptr)
+	m_pSprite(nullptr),
+	m_pCollider(nullptr)
 {
 	
 }
@@ -29,22 +25,28 @@ Player::~Player()
 	Release();
 }
 
+Player::Player(float pos_x, float pos_y, float pos_z)
+{
+	SetPosition(XMFLOAT3(pos_x, pos_y, pos_z));
+}
+
 HRESULT Player::Create(HWND hwnd)
 {
 	HRESULT hr;
 
+	// 画像を描画するクラスを作成する
 	m_pSprite = new Mesh::Sprite();
+	hr = m_pSprite->Create(hwnd, &IMAGE_FILE_NAME);
 
-	hr = m_pSprite->Create(hwnd,"Image/sample.jpg");
+	// コライダーを作成する
+	m_pCollider = new RectangleCollider();
+	m_pCollider->Create(this, m_pSprite->m_pVertexArray);
 
 	return hr;
 }
 
 void Player::Update()
 {
-	//m_transform->m_rotate.x += 0.03f;
-	//m_transform->m_rotate.y += 0.03f;
-	//m_transform->m_rotate.z += 0.03f;
 	
 	XMFLOAT3 trans = XMFLOAT3(0,0,0);
 
@@ -74,6 +76,9 @@ void Player::Update()
 
 	//RotateZ(-0.05f);
 
+	//m_transform->m_scale.x = 1.3f;
+	//m_transform->m_scale.y = 1.3f;
+
 	Move(trans);
 }
 
@@ -86,4 +91,5 @@ void Player::Render()
 void Player::Release()
 {
 	delete(m_pSprite);
+	delete(m_pCollider);
 }

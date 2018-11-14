@@ -7,14 +7,11 @@
 #include <DDSTextureLoader.h>
 #include <WICTextureLoader.h>
 #include <WICTextureLoader.cpp>
+#include <codecvt>
 
 // シェーダー
 #include "ShaderHeader/ps_tex.h"
 #include "ShaderHeader/vs_tex.h"
-
-#include <stdIO.h>
-#include <stdlib.h>
-//#include <local.h>
 
 ImageRenderer::ImageRenderer()
 {
@@ -60,11 +57,11 @@ void ImageRenderer::Render(const int vertexCount, const Transform * transform, c
 {
 	// デバイスコンテキストを取得する
 	ID3D11DeviceContext* pDeviceContext = DirectXRenderer::instance->m_pImmediateContext;
-
-	MeshRenderer::Render(vertexCount, transform, indexCount);
-
+	
 	pDeviceContext->PSSetShaderResources(0, 1, &m_pTextureView);
 	pDeviceContext->PSSetSamplers(0, 1, &m_pSampler);
+
+	MeshRenderer::Render(vertexCount, transform, indexCount);
 
 }
 
@@ -81,18 +78,23 @@ void ImageRenderer::CreateShaderInput(D3D11_INPUT_ELEMENT_DESC* vertexDesc)
 		&m_pInputLayout);
 }
 
-void ImageRenderer::CreateImage(std::string filePath)
+void ImageRenderer::CreateImage(std::string* fileName)
 {
 	HRESULT hr;
 
 	ID3D11Device* pDevice = DirectXRenderer::instance->m_pDevice;
 
-	/*wchar_t* char_ptr;
+	// ファイル名をファイルパスに変換
+	std::string filePath = "Image/" + (*fileName);
 
-	std::mbstowcs(char_ptr,filePath.c_str,15);*/
+	// stringをwstringに変換
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> cv;
+
+	//string→wstring
+	std::wstring wsfilePath = cv.from_bytes(filePath);
 
 	//テクスチャ読み込み
-	hr = CreateWICTextureFromFile(pDevice, _T("Image/sample.jpg"), &m_pTexture, &m_pTextureView);
+	hr = CreateWICTextureFromFile(pDevice, wsfilePath.c_str(), &m_pTexture, &m_pTextureView);
 
 	D3D11_SAMPLER_DESC smpDesc;
 
@@ -125,5 +127,5 @@ void ImageRenderer::CreateVertexBuffer(ImageVertex* p_vertex, int vertexCount)
 	subResourceData.SysMemPitch = 0;
 	subResourceData.SysMemSlicePitch = 0;
 
-	hr= pDevice->CreateBuffer(&bufferDesc, &subResourceData, &m_pVertexBuffer);
+	hr = pDevice->CreateBuffer(&bufferDesc, &subResourceData, &m_pVertexBuffer);
 }

@@ -32,16 +32,6 @@ HRESULT Rectangle::Create(HWND hwnd)
 
 void Rectangle::Update()
 {
-	//if (m_pos.x <= 0 && m_pos.x > -1) {
-	//	//m_pos.x -= 0.01f;
-	//	Move(XMFLOAT3(-0.01f,0,0));
-	//}
-	//else
-	//{
-	//	SetPosition(XMFLOAT3(0, 0, 0));
-	//}
-
-	//m_rotate.y -= 0.5f;
 }
 
 void Rectangle::Render(Transform* transform)

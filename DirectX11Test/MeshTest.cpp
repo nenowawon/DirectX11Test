@@ -11,8 +11,6 @@
 
 #include "DirectXRenderer.h"
 
-
-
 using namespace Mesh;
 using namespace DirectX;
 
@@ -34,6 +32,9 @@ HRESULT MeshTest::Create(HWND hwnd)
 	m_pMesh = new Mesh::Rectangle();
 
 	hr = m_pMesh->Create(hwnd);
+
+	// ちょっと横にずらす(テスト用)
+	SetPosition(XMFLOAT3(0.6f,0.6f,0));
 
 	return hr;
 }
