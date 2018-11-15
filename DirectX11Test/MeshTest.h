@@ -10,7 +10,8 @@ public:
 	~MeshTest();
 
 	HRESULT Create(HWND hwnd);
-	void    Update();
+	void    Update(float deltaTime);
+	void    LateUpdate(float deltaTime);
 	void    Render();
 	void    Release();
 

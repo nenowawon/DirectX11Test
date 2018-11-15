@@ -42,10 +42,13 @@ HRESULT Player::Create(HWND hwnd)
 	m_pCollider = new RectangleCollider();
 	m_pCollider->Create(this, m_pSprite->m_pVertexArray);
 
+	// ƒ^ƒO‚ðÝ’è‚·‚é
+	m_tag = Tag::PLAYER;
+
 	return hr;
 }
 
-void Player::Update()
+void Player::Update(float deltaTime)
 {
 	
 	XMFLOAT3 trans = XMFLOAT3(0,0,0);
@@ -76,10 +79,12 @@ void Player::Update()
 
 	//RotateZ(-0.05f);
 
-	//m_transform->m_scale.x = 1.3f;
-	//m_transform->m_scale.y = 1.3f;
-
 	Move(trans);
+}
+
+void Player::LateUpdate(float deltaTime)
+{
+
 }
 
 void Player::Render()

@@ -22,11 +22,16 @@ void GameObject::Release()
 
 void GameObject::Move(DirectX::XMFLOAT3 movePos)
 {
-	m_transform->m_pos.x += movePos.x;
+	MoveX(movePos.x);
 	
 	m_transform->m_pos.y += movePos.y;
 
 	m_transform->m_pos.z += movePos.z;
+}
+
+void GameObject::MoveX(float movePosX)
+{
+	m_transform->m_pos.x += movePosX;
 }
 
 void GameObject::SetPosition(DirectX::XMFLOAT3 pos)

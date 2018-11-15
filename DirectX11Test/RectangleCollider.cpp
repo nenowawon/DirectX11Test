@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "RectangleCollider.h"
+#include "DirectXRenderer.h"
 
 using namespace DirectX;
 
 RectangleCollider::RectangleCollider():
-	m_pGameObject(nullptr)
+	m_pGameObject(nullptr),
+	m_pRect(nullptr)
 {
 	
 }
@@ -33,6 +35,7 @@ RectangleCollider::~RectangleCollider()
 void RectangleCollider::Create(GameObject* object, ImageVertex(&vertexArray)[4]) {
 
 	Create(object);
+
 	float min_x = 0;
 	float max_x = 0;
 
@@ -43,32 +46,83 @@ void RectangleCollider::Create(GameObject* object, ImageVertex(&vertexArray)[4])
 
 	for (size_t i = 0; i < sizeof(vertexArray) / sizeof(ImageVertex); i++)
 	{
+		// x座標の最大値を更新する
+		if (vertexArray[i].m_vertPos.x > max_x) {
+			max_x = vertexArray[i].m_vertPos.x;
+		}
 
+		// x座標の最小値を更新する
+		if (vertexArray[i].m_vertPos.x < min_x) {
+			min_x = vertexArray[i].m_vertPos.x;
+		}
+
+		// y座標の最大値を更新する
+		if (vertexArray[i].m_vertPos.y > max_y) {
+			max_y = vertexArray[i].m_vertPos.y;
+		}
+
+		// y座標の最小値を更新する
+		if (vertexArray[i].m_vertPos.y < min_y) {
+			min_y = vertexArray[i].m_vertPos.y;
+		}
 	}
+	// 左辺の座標を設定
+	m_pRect->left = min_x;
+	// 右辺の座標を設定
+	m_pRect->right = max_x;
+
+	// 上辺の座標を設定
+	m_pRect->top = max_y;
+	// 下辺の座標を設定
+	m_pRect->bottom = min_y;
+
+	m_pRect->CalcScale();
 }
 
 void RectangleCollider::Create(GameObject* object) {
 	m_pGameObject = object;
+	m_pRect = new RectangleVertex();
+	DirectXRenderer::instance->AddCollider(this);
 }
 
 void RectangleCollider::Release() {
+	DirectXRenderer::instance->RemoveCollider(this);
+	delete(m_pRect);
 }
 
 bool RectangleCollider::CheckCollider(RectangleCollider * collider)
 {
-	RECT rect = collider->GetRect();
-	RECT myRect = GetRect();
 
+	RectangleVertex checkRect = collider->GetRect();
+
+	RectangleVertex myRect = GetRect();
+
+	//横に重なっていた場合
+	if (myRect.left <= checkRect.right && myRect.right >= checkRect.left)
+	{
+		//縦に重なっていた場合
+		if (myRect.top >= checkRect.bottom && myRect.bottom <= checkRect.top)
+		{
+			return true;
+		}
+
+	}
 	return false;
 }
 
-RECT RectangleCollider::GetRect()
+RectangleVertex RectangleCollider::GetRect()
 {
-	RECT rect = RECT();
-	/*rect.left = posX - m_scale->x / 2;
-	rect.top = posY - m_scale->y / 2;
-	rect.right = posX + m_scale->x / 2;
-	rect.bottom = posY + m_scale->y / 2;*/
+	RectangleVertex rect = RectangleVertex();
+
+	// 頂点座標をワールド座標に変換する
+	// 左
+	rect.left = (m_pGameObject->m_transform->m_pos.x) + (m_pRect->left);
+	// 上
+	rect.top = (m_pGameObject->m_transform->m_pos.y) + (m_pRect->top);
+	// 右
+	rect.right = (m_pGameObject->m_transform->m_pos.x) + (m_pRect->right);
+	// 下
+	rect.bottom = (m_pGameObject->m_transform->m_pos.y) + (m_pRect->bottom);
 
 	return rect;
 }

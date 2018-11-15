@@ -22,12 +22,14 @@ public:
 
 	bool CheckCollider(RectangleCollider* collider);
 
-	RECT GetRect();
+	RectangleVertex GetRect();
+
+	GameObject* m_pGameObject;
 
 private:
 
 	void Create(GameObject* object);
-	GameObject* m_pGameObject;
-	RECT* m_pRect;
+	
+	RectangleVertex* m_pRect;
 };
 

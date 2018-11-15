@@ -12,12 +12,13 @@
 
 #include "Camera.h"
 
+#include "RectangleCollider.h"
+
+using namespace std;
+
 GameObject* g_gameObjectArray[] = { 
 								new Player(),
 								new MeshTest(),
-								
-								/*new Player(0.5f,0.0f,0.0f),
-								new Player(-0.5f,0.0f,0.0f),*/
 								new SpriteTest(-0.5f,-0.5f,0.0f),
 								new SpriteTest(0.5f,-0.5f,0.0f),
 								new SpriteTest(0.0f,-0.5f,0.0f),
@@ -39,7 +40,6 @@ DirectXRenderer::DirectXRenderer():
 	}
 
 }
-
 
 DirectXRenderer::~DirectXRenderer()
 {
@@ -151,11 +151,19 @@ HRESULT DirectXRenderer::Create(HWND hwnd)
 	return S_OK;
 }
 
-void DirectXRenderer::Update() 
+void DirectXRenderer::Update(float deltaTime)
 {
 	for (auto gameObject : g_gameObjectArray) {
-		// 図形の更新処理
-		gameObject->Update();
+		// オブジェクトの更新処理
+		gameObject->Update(deltaTime);
+	}
+}
+
+void DirectXRenderer::LateUpdate(float deltaTime)
+{
+	for (auto gameObject : g_gameObjectArray) {
+		// オブジェクトの更新処理
+		gameObject->LateUpdate(deltaTime);
 	}
 }
 
@@ -212,4 +220,25 @@ void DirectXRenderer::Release()
 	}
 
 	delete(m_camera);
+}
+
+void DirectXRenderer::AddCollider(RectangleCollider* collider)
+{
+	m_ColliderList.emplace_back(collider);
+}
+
+void DirectXRenderer::RemoveCollider(RectangleCollider* collider)
+{
+	//配列内のコライダーを検索する
+	auto itr = m_ColliderList.begin();
+	while (itr != m_ColliderList.end())
+	{
+		//配列からコライダーを取り除く
+		if (*itr == collider) {
+			m_ColliderList.erase(itr);
+			break;
+		}
+		itr++;
+	}
+	//m_ColliderList.erase(collider);
 }

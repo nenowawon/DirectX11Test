@@ -16,7 +16,8 @@ public:
 	Player(float pos_x, float pos_y, float pos_z);
 
 	HRESULT Create(HWND hwnd);
-	void    Update();
+	void    Update(float deltaTime);
+	void    LateUpdate(float deltaTime);
 	void    Render();
 	void    Release();
 

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SpriteTest.h"
 
+#include "DirectXRenderer.h"
+
 using namespace DirectX;
 
 SpriteTest::SpriteTest() :
@@ -31,12 +33,33 @@ HRESULT SpriteTest::Create(HWND hwnd)
 	m_pCollider = new RectangleCollider();
 	m_pCollider->Create(this, m_pSprite->m_pVertexArray);
 
+	// タグを設定する
+	m_tag = Tag::TEST;
+
 	return hr;
 }
 
-void SpriteTest::Update()
+void SpriteTest::Update(float deltaTime)
 {
 
+}
+
+void SpriteTest::LateUpdate(float deltaTime)
+{
+	//bool isCollision = m_pCollider->CheckCollider(m_pCollider);
+	// コライダーのリストを取得
+	for (auto collider : DirectXRenderer::instance->m_ColliderList) {
+		
+		// プレイヤーとのみ衝突する
+		if (collider->m_pGameObject->m_tag != Tag::PLAYER) { continue; }
+
+		// 衝突判定をする
+		if (!m_pCollider->CheckCollider(collider)) { continue; }
+
+		// 右に移動(テスト用)
+		MoveX(0.05f);
+	}
+	
 }
 
 void SpriteTest::Render()

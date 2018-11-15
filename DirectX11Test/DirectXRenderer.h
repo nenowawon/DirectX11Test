@@ -1,6 +1,9 @@
 #pragma once
 
 #include <d3d11.h>
+#include <vector>
+
+class RectangleCollider;
 
 class Camera;
 
@@ -23,13 +26,18 @@ public:
 
 	ID3D11RasterizerState*  m_pRasterizerState;
 
+	std::vector<RectangleCollider*> m_ColliderList;
+
 	static DirectXRenderer* instance;
 
 	virtual HRESULT Create(HWND hwnd);
-	virtual void    Update();
+	virtual void    Update(float deltaTime);
+	virtual void    LateUpdate(float deltaTime);
 	virtual void    Render();
 	virtual void    Release();
-	
 
+	void AddCollider(RectangleCollider* collider);
+	
+	void RemoveCollider(RectangleCollider* collider);
 };
 

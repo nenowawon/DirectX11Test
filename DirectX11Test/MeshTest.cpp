@@ -36,10 +36,17 @@ HRESULT MeshTest::Create(HWND hwnd)
 	// ちょっと横にずらす(テスト用)
 	SetPosition(XMFLOAT3(0.6f,0.6f,0));
 
+	// タグを設定する
+	m_tag = Tag::TEST;
+
 	return hr;
 }
 
-void MeshTest::Update()
+void MeshTest::Update(float deltaTime)
+{
+}
+
+void MeshTest::LateUpdate(float deltaTime)
 {
 }
 
