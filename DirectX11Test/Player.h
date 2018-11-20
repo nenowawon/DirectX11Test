@@ -21,11 +21,23 @@ public:
 	void    Render();
 	void    Release();
 
+	void Move(DirectX::XMFLOAT3 movePos);
+	void MoveX(float movePosX);
+	void MoveY(float movePosY);
+	void MoveZ(float movePosZ);
+
 private:
+
+	void ResetCurrentMoveTemp();
+
+	void AddCurrentMoveTemp(float x,float y,float z);
+
 	Mesh::Sprite* m_pSprite;
 
-	std::string IMAGE_FILE_NAME = "sample.jpg";
+	std::string IMAGE_FILE_NAME = "player_Idle_1.png";
 
 	RectangleCollider* m_pCollider;
+
+	DirectX::XMFLOAT3 m_CurrentMoveTemp;
 };
 

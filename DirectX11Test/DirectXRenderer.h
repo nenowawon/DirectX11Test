@@ -3,9 +3,13 @@
 #include <d3d11.h>
 #include <vector>
 
+#include "GameObject.h"
+
 class RectangleCollider;
 
 class Camera;
+
+class StageCreater;
 
 class DirectXRenderer
 {
@@ -28,6 +32,10 @@ public:
 
 	std::vector<RectangleCollider*> m_ColliderList;
 
+	std::vector<GameObject*> m_gameObjectList;
+
+	StageCreater* m_pStageCreater;
+
 	static DirectXRenderer* instance;
 
 	virtual HRESULT Create(HWND hwnd);
@@ -36,8 +44,12 @@ public:
 	virtual void    Render();
 	virtual void    Release();
 
+	void AddGameObject(GameObject* gameObject);
+
+	void RemoveGameObject(GameObject* gameObject);
+
 	void AddCollider(RectangleCollider* collider);
-	
+
 	void RemoveCollider(RectangleCollider* collider);
 };
 

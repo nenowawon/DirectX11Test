@@ -6,8 +6,8 @@ using namespace DirectX;
 
 GameObject::GameObject()
 {
-	m_transform = new Transform();
-	m_transform->m_scale = XMFLOAT3(1, 1, 1);
+	m_pTransform = new Transform();
+	m_pTransform->m_scale = XMFLOAT3(1, 1, 1);
 }
 
 GameObject::~GameObject()
@@ -17,31 +17,41 @@ GameObject::~GameObject()
 
 void GameObject::Release() 
 {
-	delete(m_transform);
+	delete(m_pTransform);
 }
 
 void GameObject::Move(DirectX::XMFLOAT3 movePos)
 {
 	MoveX(movePos.x);
 	
-	m_transform->m_pos.y += movePos.y;
+	MoveY(movePos.y);
 
-	m_transform->m_pos.z += movePos.z;
+	m_pTransform->m_pos.z += movePos.z;
 }
 
 void GameObject::MoveX(float movePosX)
 {
-	m_transform->m_pos.x += movePosX;
+	m_pTransform->m_pos.x += movePosX;
+}
+
+void GameObject::MoveY(float movePosY)
+{
+	m_pTransform->m_pos.y += movePosY;
+}
+
+void GameObject::MoveZ(float movePosZ)
+{
+	m_pTransform->m_pos.z += movePosZ;
 }
 
 void GameObject::SetPosition(DirectX::XMFLOAT3 pos)
 {
-	m_transform->m_pos = pos;
+	m_pTransform->m_pos = pos;
 }
 
 void GameObject::RotateZ(float angle)
 {
-	m_transform->m_rotate.z += angle;
+	m_pTransform->m_rotate.z += angle;
 }
 
 

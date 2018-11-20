@@ -10,7 +10,7 @@ public:
 	GameObject();
 	~GameObject();
 
-	Transform* m_transform;
+	Transform* m_pTransform;
 
 	virtual HRESULT Create(HWND hwnd) = 0;
 	virtual void    Update(float deltaTime) = 0;
@@ -18,8 +18,10 @@ public:
 	virtual void    Render() = 0;
 	virtual void    Release() = 0;
 
-	void Move(DirectX::XMFLOAT3 movePos);
-	void MoveX(float movePosX);
+	virtual void Move(DirectX::XMFLOAT3 movePos);
+	virtual void MoveX(float movePosX);
+	virtual void MoveY(float movePosY);
+	virtual void MoveZ(float movePosZ);
 	void SetPosition(DirectX::XMFLOAT3 pos);
 
 	void RotateZ(float angle);

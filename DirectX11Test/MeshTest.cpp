@@ -52,7 +52,7 @@ void MeshTest::LateUpdate(float deltaTime)
 
 void MeshTest::Render()
 {
-	m_pMesh->Render(m_transform);
+	m_pMesh->Render(m_pTransform);
 
 }
 

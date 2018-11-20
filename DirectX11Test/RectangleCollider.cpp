@@ -8,7 +8,6 @@ RectangleCollider::RectangleCollider():
 	m_pGameObject(nullptr),
 	m_pRect(nullptr)
 {
-	
 }
 
 
@@ -16,21 +15,6 @@ RectangleCollider::~RectangleCollider()
 {
 	Release();
 }
-
-//void RectangleCollider::Create(GameObject* object, Vertex(&vertexArray) ) {
-//	
-//	Create(object);
-//	float min_x = 0;
-//	float max_x = 0;
-//
-//	float min_y = 0;
-//	float max_y = 0;
-//
-//	for (size_t i = 0; i < sizeof(vertexArray)/sizeof(Vertex); i++)
-//	{
-//
-//	}
-//}
 
 void RectangleCollider::Create(GameObject* object, ImageVertex(&vertexArray)[4]) {
 
@@ -92,14 +76,23 @@ void RectangleCollider::Release() {
 
 bool RectangleCollider::CheckCollider(RectangleCollider * collider)
 {
+	
+	return CheckColliderTransform(collider,*m_pGameObject->m_pTransform);
+}
 
-	RectangleVertex checkRect = collider->GetRect();
+bool RectangleCollider::CheckColliderTransform(RectangleCollider * collider, const Transform myTransform)
+{
 
-	RectangleVertex myRect = GetRect();
+	// 自分のコライダー
+	RectangleVertex myRect = GetRect(myTransform);
+
+	// チェック相手のコライダー	
+	RectangleVertex checkRect = collider->GetRect(*(collider->m_pGameObject->m_pTransform));
 
 	//横に重なっていた場合
 	if (myRect.left <= checkRect.right && myRect.right >= checkRect.left)
 	{
+
 		//縦に重なっていた場合
 		if (myRect.top >= checkRect.bottom && myRect.bottom <= checkRect.top)
 		{
@@ -110,19 +103,19 @@ bool RectangleCollider::CheckCollider(RectangleCollider * collider)
 	return false;
 }
 
-RectangleVertex RectangleCollider::GetRect()
+RectangleVertex RectangleCollider::GetRect(Transform myTransform)
 {
 	RectangleVertex rect = RectangleVertex();
 
 	// 頂点座標をワールド座標に変換する
 	// 左
-	rect.left = (m_pGameObject->m_transform->m_pos.x) + (m_pRect->left);
+	rect.left = (myTransform.m_pos.x) + (m_pRect->left);
 	// 上
-	rect.top = (m_pGameObject->m_transform->m_pos.y) + (m_pRect->top);
+	rect.top = (myTransform.m_pos.y) + (m_pRect->top);
 	// 右
-	rect.right = (m_pGameObject->m_transform->m_pos.x) + (m_pRect->right);
+	rect.right = (myTransform.m_pos.x) + (m_pRect->right);
 	// 下
-	rect.bottom = (m_pGameObject->m_transform->m_pos.y) + (m_pRect->bottom);
+	rect.bottom = (myTransform.m_pos.y) + (m_pRect->bottom);
 
 	return rect;
 }

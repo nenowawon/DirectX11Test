@@ -2,8 +2,6 @@
 #include "DirectXRenderer.h"
 #include <atltypes.h>
 
-#include "GameObject.h"
-
 #include "Player.h"
 #include "MeshTest.h"
 #include "SpriteTest.h"
@@ -13,6 +11,9 @@
 #include "Camera.h"
 
 #include "RectangleCollider.h"
+#include <vector>
+
+#include "StageCreater.h"
 
 using namespace std;
 
@@ -31,7 +32,8 @@ DirectXRenderer::DirectXRenderer():
 	m_pImmediateContext(nullptr),
 	m_pSwapChain(nullptr),
 	m_pRenderTargetView(nullptr),
-	m_camera(nullptr)
+	m_camera(nullptr),
+	m_pStageCreater(nullptr)
 {
 
 	if (instance == nullptr)
@@ -127,16 +129,17 @@ HRESULT DirectXRenderer::Create(HWND hwnd)
 	if (FAILED(hr))
 		return hr;
 
-	//// 三角形を作成する(テスト用)
-	//g_triangle = g_triangleArray;
-
 	// カメラ
 	m_camera = new Camera();
 
-	// 図形を作成する
-	for (auto mesh : g_gameObjectArray) {
-		mesh->Create(hwnd);
-	}
+	//// オブジェクトを作成する
+	//for (auto gameObject : g_gameObjectArray) {
+	//	gameObject->Create(hwnd);
+	//}
+
+	// ステージ生成する
+	m_pStageCreater = new StageCreater();
+	m_pStageCreater->Create(hwnd);
 
 	D3D11_RASTERIZER_DESC rastDesc;
 
@@ -148,12 +151,12 @@ HRESULT DirectXRenderer::Create(HWND hwnd)
 
 	m_pDevice->CreateRasterizerState(&rastDesc,&m_pRasterizerState);
 
-	return S_OK;
+	return hr;
 }
 
 void DirectXRenderer::Update(float deltaTime)
 {
-	for (auto gameObject : g_gameObjectArray) {
+	for (auto gameObject : m_gameObjectList) {
 		// オブジェクトの更新処理
 		gameObject->Update(deltaTime);
 	}
@@ -161,7 +164,7 @@ void DirectXRenderer::Update(float deltaTime)
 
 void DirectXRenderer::LateUpdate(float deltaTime)
 {
-	for (auto gameObject : g_gameObjectArray) {
+	for (auto gameObject : m_gameObjectList) {
 		// オブジェクトの更新処理
 		gameObject->LateUpdate(deltaTime);
 	}
@@ -184,9 +187,9 @@ void DirectXRenderer::Render()
 	//// ラスタライザステートをセットする
 	//m_pImmediateContext->RSSetState(m_pRasterizerState);
 
-	for (auto mesh : g_gameObjectArray) {
+	for (auto gameObject : m_gameObjectList) {
 		// 図形を描画する
-		mesh->Render();
+		gameObject->Render();
 	}
 
 	m_pSwapChain->Present(1, 0);
@@ -214,12 +217,34 @@ void DirectXRenderer::Release()
 		m_pDevice = NULL;
 	}
 
-	// 図形を開放する
-	for (auto mesh : g_gameObjectArray) {
-		delete(mesh);
+	// オブジェクトを開放する
+	for (auto gameObject : m_gameObjectList) {
+		delete(gameObject);
 	}
 
+	delete(m_pStageCreater);
+
 	delete(m_camera);
+}
+
+void DirectXRenderer::AddGameObject(GameObject * gameObject)
+{
+	m_gameObjectList.emplace_back(gameObject);
+}
+
+void DirectXRenderer::RemoveGameObject(GameObject * gameObject)
+{
+	//配列内のオブジェクトを検索する
+	auto itr = m_gameObjectList.begin();
+	while (itr != m_gameObjectList.end())
+	{
+		//配列からオブジェクトを取り除く
+		if (*itr == gameObject) {
+			m_gameObjectList.erase(itr);
+			break;
+		}
+		itr++;
+	}
 }
 
 void DirectXRenderer::AddCollider(RectangleCollider* collider)
@@ -240,5 +265,4 @@ void DirectXRenderer::RemoveCollider(RectangleCollider* collider)
 		}
 		itr++;
 	}
-	//m_ColliderList.erase(collider);
 }

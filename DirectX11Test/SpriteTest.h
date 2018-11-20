@@ -21,7 +21,7 @@ public:
 
 private:
 	Mesh::Sprite* m_pSprite;
-	std::string IMAGE_FILE_NAME = "sample2.jpg";
+	std::string IMAGE_FILE_NAME = "block01.png";
 	RectangleCollider* m_pCollider;
 };
 

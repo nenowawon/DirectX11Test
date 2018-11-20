@@ -22,7 +22,9 @@ public:
 
 	bool CheckCollider(RectangleCollider* collider);
 
-	RectangleVertex GetRect();
+	bool CheckColliderTransform(RectangleCollider* collider,const Transform myTransform);
+
+	RectangleVertex GetRect(Transform myTransform);
 
 	GameObject* m_pGameObject;
 

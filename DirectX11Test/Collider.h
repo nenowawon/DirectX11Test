@@ -9,3 +9,10 @@ public:
 	//virtual bool CheckCollider(Collider* collider) = 0;
 };
 
+//struct Collision
+//{
+//	bool isCollison;
+//
+//	bool 
+//};
+
