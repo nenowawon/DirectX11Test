@@ -14,7 +14,7 @@ public:
 
 	const float GROUND_POS_Y = -0.6f;
 
-	GameObject* stageObjectArray[16] = 
+	GameObject* stageObjectArray[18] = 
 	{
 		new Player(-0.1f,0.0f,0.0f),
 		new MeshTest(),
@@ -32,6 +32,8 @@ public:
 		new SpriteTest(-0.35f,0.2f,0.0f),
 		new SpriteTest(-0.55f,0.2f,0.0f),
 		new SpriteTest(0.25f,(GROUND_POS_Y+0.2f),0.0f),
+		new SpriteTest(-0.55f,(GROUND_POS_Y + 0.3f),0.0f),
+		new SpriteTest(0.8f,(GROUND_POS_Y + 0.3f),0.0f),
 	};
 };
 

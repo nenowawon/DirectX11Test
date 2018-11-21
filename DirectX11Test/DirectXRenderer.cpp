@@ -177,7 +177,7 @@ void DirectXRenderer::Render()
 	if (NULL == m_pRenderTargetView) return;
 	if (NULL == m_pSwapChain) return;
 
-	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
+	float clearColor[4] = { 0.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 
 	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
 	// ‰æ–Ê‚ğƒNƒŠƒA‚·‚é

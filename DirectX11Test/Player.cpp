@@ -11,6 +11,8 @@
 
 #include <cmath>
 
+#include <Windows.h>
+
 using namespace System;
 using namespace Mesh;
 using namespace DirectX;
@@ -20,7 +22,9 @@ Player::Player() :
 	m_pSprite(nullptr),
 	m_pCollider(nullptr)
 {
+	//std::cout << "Hello world." << std::endl;
 
+	
 }
 
 Player::~Player()
@@ -87,10 +91,6 @@ void Player::Update(float deltaTime)
 	// 落下させる
 	trans.y -= fallSpeed;
 
-	//MoveY(-fallSpeed);
-
-	//AddCurrentMoveTemp(trans.x, trans.y, trans.z);
-
 	Move(trans);
 
 }
@@ -113,48 +113,11 @@ void Player::LateUpdate(float deltaTime)
 		colliderList.emplace_back(collider);
 	}
 
-	float nearDistance = 9999;
-
-	vector<float> distanceList;
-
-	for (auto collider : colliderList) {
-
-		// x軸の距離を取得する
-		float distanceX = abs(m_pTransform->m_pos.x - collider->m_pGameObject->m_pTransform->m_pos.x);
-
-		float distanceY = abs(m_pTransform->m_pos.y - collider->m_pGameObject->m_pTransform->m_pos.y);
-
-		float distance = distanceX + distanceY;
-
-		distanceList.emplace_back(distance);
-
-		// 最小距離を取得する
-		if (distance < nearDistance) {
-			nearDistance = distance;
-		}
-	}
-
-	// 衝突反応の判定用コライダーのリスト
-	vector<RectangleCollider*> checkColliderList;
-
-	// コライダーのリストのイテレータ
-	auto itr = colliderList.begin();
-
-	const float margin = 0.001f;
-
-	for (auto distance : distanceList) {
-
-		// 一番近いオブジェクトのみ格納
-		if (distance <= nearDistance + margin) {
-			checkColliderList.emplace_back(*itr);
-		}
-
-		itr++;
-	}
+	//const float margin = 0.000f;
 
 	XMFLOAT3 movePos = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
-	for (auto collider : checkColliderList) {
+	for (auto collider : colliderList) {
 		// 衝突物の座標
 		XMFLOAT3 checkColliderPos = collider->m_pGameObject->m_pTransform->m_pos;
 
@@ -165,10 +128,13 @@ void Player::LateUpdate(float deltaTime)
 
 		Transform transformTemp = *m_pTransform;
 
-		//bool isBreack = false;
+		bool isPositisionBackY = false;
+
+		bool isPositisionBackX = false;
 
 		// Y軸座標の移動があった場合
 		if (m_CurrentMoveTemp.y > 0.0f || m_CurrentMoveTemp.y < 0.0f) {
+			
 			// Y軸座標を戻す
 			transformTemp.m_pos.y -= m_CurrentMoveTemp.y;
 
@@ -177,21 +143,9 @@ void Player::LateUpdate(float deltaTime)
 
 				float moveYTemp = 0.0f;
 
-				//上に移動している場合
-				if (m_CurrentMoveTemp.y >= 0.0f) {
-					// 下に移動する
-					moveYTemp = -abs(collisionRect.bottom - myRect.top) - margin;
-				}
-				// 下の場合
-				else
-				{
-					// 上に移動する
-					moveYTemp = abs(collisionRect.top - myRect.bottom) + margin;
-				}
-				// 移動量を格納する
-				movePos.y = moveYTemp;
+				isPositisionBackY = true;
 
-				//isBreack = true;
+				OutputDebugString(_T("縦に戻す\n"));
 			}
 		}
 
@@ -207,30 +161,35 @@ void Player::LateUpdate(float deltaTime)
 
 				float moveXTemp = 0.0f;
 
-				//moveXTemp = -m_CurrentMoveTemp.x;
-				//右に移動している場合
-				if (m_CurrentMoveTemp.x >= 0.0f) {
-					// 左に移動する
-					moveXTemp = -abs(collisionRect.left - myRect.right) - margin;
-				}
-				// 左の場合
-				else
-				{
-					// 右に移動する
-					moveXTemp = abs(collisionRect.right - myRect.left) + margin;
-				}
-				// 移動量を格納する
-				movePos.x = moveXTemp;
+				isPositisionBackX = true;
+
+				OutputDebugString(_T("横に戻す\n"));
 
 			} // if
 		} // if
+
+		if (isPositisionBackX&&isPositisionBackY) {
+			// 衝突したコライダーが他にある場合
+			if (colliderList.size() > 0) {
+				continue;
+			}
+		}
+
+		// x座標を元に戻す
+		if (isPositisionBackX) {
+			movePos.x = -m_CurrentMoveTemp.x;
+		}
+		// y座標を元に戻す
+		if (isPositisionBackY) {
+			movePos.y = -m_CurrentMoveTemp.y;
+		}
+
 	} // for
 
 	// 移動する
 	Move(movePos);
 
 }
-
 
 void Player::Render()
 {
