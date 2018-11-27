@@ -14,10 +14,12 @@ public:
 
 	const float GROUND_POS_Y = -0.6f;
 
-	GameObject* stageObjectArray[18] = 
+	GameObject* stageObjectArray[23] = 
 	{
 		new Player(-0.1f,0.0f,0.0f),
 		new MeshTest(),
+		new SpriteTest(-1.4f,GROUND_POS_Y,0.0f),
+		new SpriteTest(-1.2f,GROUND_POS_Y,0.0f),
 		new SpriteTest(-1.0f,GROUND_POS_Y,0.0f),
 		new SpriteTest(-0.8f,GROUND_POS_Y,0.0f),
 		new SpriteTest(-0.6f,GROUND_POS_Y,0.0f),
@@ -32,8 +34,12 @@ public:
 		new SpriteTest(-0.35f,0.2f,0.0f),
 		new SpriteTest(-0.55f,0.2f,0.0f),
 		new SpriteTest(0.25f,(GROUND_POS_Y+0.2f),0.0f),
-		new SpriteTest(-0.55f,(GROUND_POS_Y + 0.3f),0.0f),
+		//new SpriteTest(-0.55f,(GROUND_POS_Y + 0.3f),0.0f),
 		new SpriteTest(0.8f,(GROUND_POS_Y + 0.3f),0.0f),
+		new SpriteTest(0.8f,GROUND_POS_Y,0.0f),
+		new SpriteTest(1.0f,GROUND_POS_Y,0.0f),
+		new SpriteTest(1.2f,GROUND_POS_Y,0.0f),
+		new SpriteTest(1.4f,GROUND_POS_Y,0.0f),
 	};
 };
 

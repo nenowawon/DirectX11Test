@@ -1,4 +1,7 @@
 ﻿  DirectXRenderer.cpp
   Player.cpp
+e:\ko tm\c++\directx11test\directx11test\player.cpp(82): warning C4809: switch 文に冗長な 'default' ラベルが存在します。可能な 'case' 条件はすべて記述されています
+e:\ko tm\c++\directx11test\directx11test\player.cpp(128): warning C4809: switch 文に冗長な 'default' ラベルが存在します。可能な 'case' 条件はすべて記述されています
+  StageCreater.cpp
   コードを生成中...
   DirectX11Test.vcxproj -> E:\KO tm\C++\DirectX11Test\x64\Debug\DirectX11Test.exe

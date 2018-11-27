@@ -28,6 +28,10 @@ namespace System {
 
 		bool GetKey(UINT KeyCode);
 
+		bool GetKeyDown(UINT KeyCode);
+
+		bool GetKeyUp(UINT KeyCode);
+
 		void Release();
 	};
 }

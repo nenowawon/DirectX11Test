@@ -118,7 +118,7 @@ void MeshRenderer::SetParamater(ID3D11DeviceContext* pDeviceContext, const Trans
 	worldMatrix = XMMatrixMultiply(worldMatrix,mat_trans);
 
 	// ビューマトリックス作成
-	XMVECTOR eye = XMVectorSet(0.0f, 0.0f, -2.0f, 0.0f);
+	XMVECTOR eye = XMVectorSet(0.0f, 0.0f, -4.0f, 0.0f);
 	XMVECTOR focus = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	XMMATRIX viewMatrix = XMMatrixLookAtLH(eye, focus, up);

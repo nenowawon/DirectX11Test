@@ -45,7 +45,7 @@ HRESULT Input::Create(HWND hWnd, HINSTANCE hInst)
 	// 協調モードの設定
 	hr = m_pKeybordDevice->SetCooperativeLevel(hWnd, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 
-	return S_OK;
+	return hr;
 }
 
 void Input::Update()
@@ -65,6 +65,28 @@ void Input::Update()
 bool Input::GetKey(UINT KeyCode)
 {
 	return (m_KBNowBuf[KeyCode]);
+}
+
+// ボタン押下を取得
+bool Input::GetKeyDown(UINT KeyCode)
+{
+	// 前のフレームでそのキーが押されていない場合
+	if (!m_KBOldBuf[KeyCode]) {
+
+		return GetKey(KeyCode);
+	}
+	return false;
+}
+
+// ボタン離しを取得
+bool Input::GetKeyUp(UINT KeyCode)
+{
+	// 前のフレームでそのキーが押されていた場合
+	if (m_KBOldBuf[KeyCode]) {
+
+		return !GetKey(KeyCode);
+	}
+	return false;
 }
 
 void Input::Release() 

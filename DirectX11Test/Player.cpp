@@ -22,9 +22,7 @@ Player::Player() :
 	m_pSprite(nullptr),
 	m_pCollider(nullptr)
 {
-	//std::cout << "Hello world." << std::endl;
 
-	
 }
 
 Player::~Player()
@@ -60,43 +58,150 @@ void Player::Update(float deltaTime)
 
 	ResetCurrentMoveTemp();
 
-	XMFLOAT3 trans = XMFLOAT3(0, 0, 0);
+	XMFLOAT3 velTemp = XMFLOAT3(0, 0, 0);
 
-	float moveSpeed = 0.015f;
-
+	// 左キーが押された時
+	if (Input::instance->GetKeyDown(DIK_LEFT)) {
+		if (isGround) {
+			m_velocity.x -= startSideMoveSpeed;
+		}
+		
+	}
 	// 左キーが押されているとき
-	if (Input::instance->GetKey(DIK_LEFT))
+	else if (Input::instance->GetKey(DIK_LEFT))
 	{
-		trans.x += -moveSpeed;
+		switch (isGround)
+		{
+		case true:
+			m_velocity.x -= sideAccelSpeed;
+			break;
+		case false:
+			m_velocity.x -= airSideMoveSpeed;
+		default:
+			break;
+		}
+		
+	}
+	// 摩擦をかける
+	else {
+		// 左に移動している場合
+		if (m_velocity.x < 0) {
+
+			// 接地している場合
+			if (isGround) {
+				// 右に力をかける
+				m_velocity.x += groundFriction;
+			}
+			else
+			{
+				// 右に力をかける
+				m_velocity.x += airFriction;
+			}
+
+			if (m_velocity.x > 0) {
+				m_velocity.x = 0;
+			}
+		}
+
+	}
+
+	// 右キーが押された時
+	if (Input::instance->GetKeyDown(DIK_RIGHT)) {
+		// 接地している場合
+		if (isGround) {
+			m_velocity.x += startSideMoveSpeed;
+		}
+
 	}
 	// 右キーが押されているとき
 	else if (Input::instance->GetKey(DIK_RIGHT))
 	{
-		trans.x += moveSpeed;
+		switch (isGround)
+		{
+		case true:
+			m_velocity.x += sideAccelSpeed;
+			break;
+		case false:
+			m_velocity.x += airSideMoveSpeed;
+		default:
+			break;
+		}
+
+	}
+	// 摩擦をかける
+	else {
+		// 右側に移動している場合
+		if (m_velocity.x > 0) {
+
+			// 接地している場合
+			if (isGround) {
+				// 左に力を加える
+				m_velocity.x -= groundFriction;
+			}
+			else
+			{
+				// 左に力を加える
+				m_velocity.x -= airFriction;
+			}
+
+			if (m_velocity.x < 0) {
+				m_velocity.x = 0;
+			}
+		}
+
 	}
 
-	// 上キーが押されているとき
-	if (Input::instance->GetKey(DIK_UP))
+	// ジャンプキーを押したとき
+	if (Input::instance->GetKeyDown(DIK_SPACE)) {
+		// 接地している場合のみ
+		if (isGround) {
+			m_velocity.y = startJumpSpeed;
+		}
+
+	}
+	// ジャンプキーが押されている場合
+	else if (Input::instance->GetKey(DIK_SPACE)) {
+
+		// ジャンプが終了し、上昇が終わるまで
+		if (m_velocity.y > 0)
+		{
+			m_velocity.y -= jumpFriction;
+
+		}
+		else
+		{
+			// 少しずつ上昇量を減らす
+			m_velocity.y -= jumpFallSpeed;
+		}
+
+	}
+
+	else
 	{
-		trans.y += moveSpeed;
+		// 落下速度に制限をかける
+		if (m_velocity.y < fallSpeedLimit) {
+			m_velocity.y = fallSpeedLimit;
+		}
+		else
+		{
+			// 落下させる
+			m_velocity.y -= fallSpeed;
+		}
+
 	}
-	// 下キーが押されているとき
-	else if (Input::instance->GetKey(DIK_DOWN))
-	{
-		trans.y += -moveSpeed;
-	}
 
-	float fallSpeed = 0.01f;
+	/*if (Input::instance->GetKeyUp(DIK_SPACE)) {
+		OutputDebugString(_T("スペースキーが離された\n"));
+	}*/
 
-	// 落下させる
-	trans.y -= fallSpeed;
-
-	Move(trans);
+	Move(m_velocity);
 
 }
 
 void Player::LateUpdate(float deltaTime)
 {
+
+	isGround = false;
 
 	vector<RectangleCollider*> colliderList;
 
@@ -113,9 +218,9 @@ void Player::LateUpdate(float deltaTime)
 		colliderList.emplace_back(collider);
 	}
 
-	//const float margin = 0.000f;
-
 	XMFLOAT3 movePos = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	XMFLOAT3 movePosTemp = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	for (auto collider : colliderList) {
 		// 衝突物の座標
@@ -134,7 +239,7 @@ void Player::LateUpdate(float deltaTime)
 
 		// Y軸座標の移動があった場合
 		if (m_CurrentMoveTemp.y > 0.0f || m_CurrentMoveTemp.y < 0.0f) {
-			
+
 			// Y軸座標を戻す
 			transformTemp.m_pos.y -= m_CurrentMoveTemp.y;
 
@@ -144,8 +249,6 @@ void Player::LateUpdate(float deltaTime)
 				float moveYTemp = 0.0f;
 
 				isPositisionBackY = true;
-
-				OutputDebugString(_T("縦に戻す\n"));
 			}
 		}
 
@@ -163,8 +266,6 @@ void Player::LateUpdate(float deltaTime)
 
 				isPositisionBackX = true;
 
-				OutputDebugString(_T("横に戻す\n"));
-
 			} // if
 		} // if
 
@@ -175,20 +276,77 @@ void Player::LateUpdate(float deltaTime)
 			}
 		}
 
+		float margine = 0.001f;
+
 		// x座標を元に戻す
 		if (isPositisionBackX) {
-			movePos.x = -m_CurrentMoveTemp.x;
+
+			// x軸の戻す量を格納する
+			if (m_CurrentMoveTemp.x >= 0.0f) {
+
+				// 左に戻す
+				float backDistance = -abs(collisionRect.left - myRect.right) - margine;
+
+				if (backDistance < movePos.x) {
+					movePos.x = backDistance;
+				}
+
+			}
+			else
+			{
+				float backDistance = abs(collisionRect.right - myRect.left) + margine;
+
+				if (backDistance > movePos.x) {
+					movePos.x = backDistance;
+				}
+			}
+			// 速度を元に戻す
+			m_velocity.x = 0;
 		}
 		// y座標を元に戻す
 		if (isPositisionBackY) {
-			movePos.y = -m_CurrentMoveTemp.y;
+
+			float backDistance = movePos.y;
+			// y軸の戻す量を格納する
+			if (m_CurrentMoveTemp.y >= 0.0f) {
+
+				backDistance = -abs(collisionRect.bottom - myRect.top) - margine;
+
+				if (backDistance < movePos.y) {
+					movePos.y = backDistance;
+				}
+
+			}
+			else
+			{
+				backDistance = abs(collisionRect.top - myRect.bottom) + margine;
+
+				if (backDistance > movePos.y) {
+					movePos.y = backDistance;
+				}
+			}
+			// 速度を元に戻す
+			m_velocity.y = 0;
+
+			// 下に移動していた場合
+			if (m_CurrentMoveTemp.y < 0) {
+				// 接地フラグをオンにする
+				isGround = true;
+			}
 		}
 
 	} // for
 
+	if (isGround) {
+		OutputDebugString(_T("接地している\n"));
+	}
+	else
+	{
+		OutputDebugString(_T("接地していない\n"));
+	}
+
 	// 移動する
 	Move(movePos);
-
 }
 
 void Player::Render()

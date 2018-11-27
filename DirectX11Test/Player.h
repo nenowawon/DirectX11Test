@@ -39,5 +39,32 @@ private:
 	RectangleCollider* m_pCollider;
 
 	DirectX::XMFLOAT3 m_CurrentMoveTemp;
+
+	DirectX::XMFLOAT3 m_velocity;
+
+	bool isGround = false;
+
+	// 地面での移動開始速度
+	float startSideMoveSpeed = 0.015f;
+
+	// 空中での横移動スピード
+	float airSideMoveSpeed = 0.003f;
+
+	// 地面での加速度
+	float sideAccelSpeed = 0.001f;
+
+	float groundFriction = 0.005f;
+
+	float airFriction = 0.003f;
+
+	float startJumpSpeed = 0.075f;
+
+	float jumpFriction = 0.003f;
+
+	float fallSpeed = 0.006f;
+
+	float jumpFallSpeed = 0.0025f;
+
+	float fallSpeedLimit = -0.05f;
 };
 
