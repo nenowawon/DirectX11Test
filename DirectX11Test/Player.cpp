@@ -63,21 +63,34 @@ void Player::Update(float deltaTime)
 	// 左キーが押された時
 	if (Input::instance->GetKeyDown(DIK_LEFT)) {
 		if (isGround) {
-			m_velocity.x -= startSideMoveSpeed;
+			m_velocity.x -= startNormalMoveSpeed;
 		}
 		
 	}
 	// 左キーが押されているとき
 	else if (Input::instance->GetKey(DIK_LEFT))
 	{
+		// 接地しているか
 		switch (isGround)
 		{
+			// 接地している場合
 		case true:
-			m_velocity.x -= sideAccelSpeed;
+			m_velocity.x -= normalAccelSpeed;
+			// 最高速度を超えた場合
+			if (m_velocity.x < -normalMoveSpeedLimit) {
+
+				m_velocity.x = -normalMoveSpeedLimit;
+			}
 			break;
+			// 空中の場合
 		case false:
 			m_velocity.x -= airSideMoveSpeed;
-		default:
+
+			// 最高速度を超えた場合
+			if (m_velocity.x < -airSideMoveSpeedLimit) {
+
+				m_velocity.x = -airSideMoveSpeedLimit;
+			}
 			break;
 		}
 		
@@ -92,9 +105,10 @@ void Player::Update(float deltaTime)
 				// 右に力をかける
 				m_velocity.x += groundFriction;
 			}
+			// 空中の場合
 			else
 			{
-				// 右に力をかける
+				// 右に力を加える
 				m_velocity.x += airFriction;
 			}
 
@@ -109,21 +123,33 @@ void Player::Update(float deltaTime)
 	if (Input::instance->GetKeyDown(DIK_RIGHT)) {
 		// 接地している場合
 		if (isGround) {
-			m_velocity.x += startSideMoveSpeed;
+			m_velocity.x += startNormalMoveSpeed;
 		}
 
 	}
 	// 右キーが押されているとき
 	else if (Input::instance->GetKey(DIK_RIGHT))
 	{
+		// 接地しているかどうか
 		switch (isGround)
 		{
+			// 接地している場合
 		case true:
-			m_velocity.x += sideAccelSpeed;
+			m_velocity.x += normalAccelSpeed;
+			// 最高速度を超えた場合
+			if (m_velocity.x > normalMoveSpeedLimit) {
+
+				m_velocity.x = normalMoveSpeedLimit;
+			}
 			break;
+			// 空中にいる場合
 		case false:
 			m_velocity.x += airSideMoveSpeed;
-		default:
+			// 最高速度を超えた場合
+			if (m_velocity.x > airSideMoveSpeedLimit) {
+
+				m_velocity.x = airSideMoveSpeedLimit;
+			}
 			break;
 		}
 
@@ -138,6 +164,7 @@ void Player::Update(float deltaTime)
 				// 左に力を加える
 				m_velocity.x -= groundFriction;
 			}
+			// 空中の場合
 			else
 			{
 				// 左に力を加える
@@ -151,48 +178,7 @@ void Player::Update(float deltaTime)
 
 	}
 
-	// ジャンプキーを押したとき
-	if (Input::instance->GetKeyDown(DIK_SPACE)) {
-		// 接地している場合のみ
-		if (isGround) {
-			m_velocity.y = startJumpSpeed;
-		}
-
-	}
-	// ジャンプキーが押されている場合
-	else if (Input::instance->GetKey(DIK_SPACE)) {
-
-		// ジャンプが終了し、上昇が終わるまで
-		if (m_velocity.y > 0)
-		{
-			m_velocity.y -= jumpFriction;
-
-		}
-		else
-		{
-			// 少しずつ上昇量を減らす
-			m_velocity.y -= jumpFallSpeed;
-		}
-
-	}
-
-	else
-	{
-		// 落下速度に制限をかける
-		if (m_velocity.y < fallSpeedLimit) {
-			m_velocity.y = fallSpeedLimit;
-		}
-		else
-		{
-			// 落下させる
-			m_velocity.y -= fallSpeed;
-		}
-
-	}
-
-	/*if (Input::instance->GetKeyUp(DIK_SPACE)) {
-		OutputDebugString(_T("スペースキーが離された\n"));
-	}*/
+	Jump();
 
 	Move(m_velocity);
 
@@ -337,14 +323,6 @@ void Player::LateUpdate(float deltaTime)
 
 	} // for
 
-	if (isGround) {
-		OutputDebugString(_T("接地している\n"));
-	}
-	else
-	{
-		OutputDebugString(_T("接地していない\n"));
-	}
-
 	// 移動する
 	Move(movePos);
 }
@@ -368,6 +346,54 @@ void Player::Move(DirectX::XMFLOAT3 movePos)
 	MoveY(movePos.y);
 
 	MoveZ(movePos.z);
+}
+
+void Player::SideNormalMove(float moveVelX)
+{
+
+	MoveX(moveVelX);
+}
+
+void Player::Jump()
+{
+	// ジャンプキーを押したとき
+	if (Input::instance->GetKeyDown(DIK_SPACE)) {
+		// 接地している場合のみ
+		if (isGround) {
+			m_velocity.y = jumpForce;
+		}
+
+	}
+	// ジャンプキーが押されている場合
+	else if (Input::instance->GetKey(DIK_SPACE)) {
+
+		// ジャンプが終了し、上昇が終わるまで
+		if (m_velocity.y > 0)
+		{
+			m_velocity.y -= jumpFriction;
+
+		}
+		else
+		{
+			// 少しずつ上昇量を減らす
+			m_velocity.y -= jumpFallSpeed;
+		}
+
+	}
+
+	else
+	{
+		// 落下速度に制限をかける
+		if (m_velocity.y < fallSpeedLimit) {
+			m_velocity.y = fallSpeedLimit;
+		}
+		else
+		{
+			// 落下させる
+			m_velocity.y -= fallSpeed;
+		}
+
+	}
 }
 
 void Player::MoveX(float movePosX)
