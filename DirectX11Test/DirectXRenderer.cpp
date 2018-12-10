@@ -17,14 +17,6 @@
 
 using namespace std;
 
-GameObject* g_gameObjectArray[] = { 
-								new Player(),
-								new MeshTest(),
-								new SpriteTest(-0.5f,-0.5f,0.0f),
-								new SpriteTest(0.5f,-0.5f,0.0f),
-								new SpriteTest(0.0f,-0.5f,0.0f),
-							};
-
 DirectXRenderer* DirectXRenderer::instance = nullptr;
 
 DirectXRenderer::DirectXRenderer():

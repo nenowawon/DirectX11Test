@@ -21,6 +21,12 @@ public:
 	void    Render();
 	void    Release();
 
+	void MoveNormal();
+
+	void MoveDash();
+
+	void MoveAir();
+
 	void Move(DirectX::XMFLOAT3 movePos);
 	void SideNormalMove(float moveVelX);
 
@@ -52,13 +58,13 @@ private:
 	float startNormalMoveSpeed = 0.0075f;
 
 	// 通常移動の加速度
-	float normalAccelSpeed = 0.001f;
+	float normalAccelSpeed = 0.002f;
 
 	// 通常移動の限界スピード
-	float normalMoveSpeedLimit = 0.0125f;
+	float normalMoveSpeedLimit = 0.0175f;
 
 	// 空中での横移動スピード
-	float airSideMoveSpeed = 0.008f;
+	float airSideMoveSpeed = 0.004f;
 
 	// 空中での横移動の限界スピード
 	float airSideMoveSpeedLimit = 0.015f;
@@ -67,7 +73,7 @@ private:
 	float groundFriction = 0.0075f;
 
 	// 空中での摩擦力
-	float airFriction = 0.0001f;
+	float airFriction = 0.0002f;
 
 	// ジャンプの力
 	float jumpForce = 0.075f;
@@ -79,6 +85,6 @@ private:
 
 	float jumpFallSpeed = 0.0025f;
 
-	float fallSpeedLimit = -0.05f;
+	float fallSpeedLimit = -0.075f;
 };
 

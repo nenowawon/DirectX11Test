@@ -58,124 +58,14 @@ void Player::Update(float deltaTime)
 
 	ResetCurrentMoveTemp();
 
-	XMFLOAT3 velTemp = XMFLOAT3(0, 0, 0);
-
-	// 左キーが押された時
-	if (Input::instance->GetKeyDown(DIK_LEFT)) {
-		if (isGround) {
-			m_velocity.x -= startNormalMoveSpeed;
-		}
-		
+	// 接地している場合
+	if (isGround) {
+		MoveNormal();
 	}
-	// 左キーが押されているとき
-	else if (Input::instance->GetKey(DIK_LEFT))
+	// 空中にいる場合
+	else
 	{
-		// 接地しているか
-		switch (isGround)
-		{
-			// 接地している場合
-		case true:
-			m_velocity.x -= normalAccelSpeed;
-			// 最高速度を超えた場合
-			if (m_velocity.x < -normalMoveSpeedLimit) {
-
-				m_velocity.x = -normalMoveSpeedLimit;
-			}
-			break;
-			// 空中の場合
-		case false:
-			m_velocity.x -= airSideMoveSpeed;
-
-			// 最高速度を超えた場合
-			if (m_velocity.x < -airSideMoveSpeedLimit) {
-
-				m_velocity.x = -airSideMoveSpeedLimit;
-			}
-			break;
-		}
-		
-	}
-	// 摩擦をかける
-	else {
-		// 左に移動している場合
-		if (m_velocity.x < 0) {
-
-			// 接地している場合
-			if (isGround) {
-				// 右に力をかける
-				m_velocity.x += groundFriction;
-			}
-			// 空中の場合
-			else
-			{
-				// 右に力を加える
-				m_velocity.x += airFriction;
-			}
-
-			if (m_velocity.x > 0) {
-				m_velocity.x = 0;
-			}
-		}
-
-	}
-
-	// 右キーが押された時
-	if (Input::instance->GetKeyDown(DIK_RIGHT)) {
-		// 接地している場合
-		if (isGround) {
-			m_velocity.x += startNormalMoveSpeed;
-		}
-
-	}
-	// 右キーが押されているとき
-	else if (Input::instance->GetKey(DIK_RIGHT))
-	{
-		// 接地しているかどうか
-		switch (isGround)
-		{
-			// 接地している場合
-		case true:
-			m_velocity.x += normalAccelSpeed;
-			// 最高速度を超えた場合
-			if (m_velocity.x > normalMoveSpeedLimit) {
-
-				m_velocity.x = normalMoveSpeedLimit;
-			}
-			break;
-			// 空中にいる場合
-		case false:
-			m_velocity.x += airSideMoveSpeed;
-			// 最高速度を超えた場合
-			if (m_velocity.x > airSideMoveSpeedLimit) {
-
-				m_velocity.x = airSideMoveSpeedLimit;
-			}
-			break;
-		}
-
-	}
-	// 摩擦をかける
-	else {
-		// 右側に移動している場合
-		if (m_velocity.x > 0) {
-
-			// 接地している場合
-			if (isGround) {
-				// 左に力を加える
-				m_velocity.x -= groundFriction;
-			}
-			// 空中の場合
-			else
-			{
-				// 左に力を加える
-				m_velocity.x -= airFriction;
-			}
-
-			if (m_velocity.x < 0) {
-				m_velocity.x = 0;
-			}
-		}
-
+		MoveAir();
 	}
 
 	Jump();
@@ -194,7 +84,7 @@ void Player::LateUpdate(float deltaTime)
 	// コライダーのリストを取得
 	for (auto collider : DirectXRenderer::instance->m_ColliderList) {
 
-		//テスト用オブジェクトにぶつかった場合
+		// テスト用オブジェクトにぶつかった場合
 		if (collider->m_pGameObject->m_tag != Tag::TEST) { continue; }
 
 		// 衝突判定をする
@@ -257,7 +147,7 @@ void Player::LateUpdate(float deltaTime)
 
 		if (isPositisionBackX&&isPositisionBackY) {
 			// 衝突したコライダーが他にある場合
-			if (colliderList.size() > 0) {
+			if (colliderList.size() > 1) {
 				continue;
 			}
 		}
@@ -337,6 +227,128 @@ void Player::Release()
 {
 	delete(m_pSprite);
 	delete(m_pCollider);
+}
+
+void Player::MoveNormal()
+{
+	// 左キーが押された時
+	if (Input::instance->GetKeyDown(DIK_LEFT)) {
+		m_velocity.x -= startNormalMoveSpeed;
+	}
+	// 左キーが押されているとき
+	else if (Input::instance->GetKey(DIK_LEFT))
+	{
+		// 左に移動する
+		m_velocity.x -= normalAccelSpeed;
+		// 最高速度を超えた場合
+		if (m_velocity.x < -normalMoveSpeedLimit) {
+
+			m_velocity.x = -normalMoveSpeedLimit;
+		}
+
+	}
+	// 摩擦をかける
+	else {
+		// 左に移動している場合
+		if (m_velocity.x < 0) {
+
+			// 右に力をかける
+			m_velocity.x += groundFriction;
+
+			if (m_velocity.x > 0) {
+				m_velocity.x = 0;
+			}
+		}
+
+	}
+
+	// 右キーが押された時
+	if (Input::instance->GetKeyDown(DIK_RIGHT)) {
+		// 右に移動する
+		m_velocity.x += startNormalMoveSpeed;
+
+	}
+	// 右キーが押されているとき
+	else if (Input::instance->GetKey(DIK_RIGHT))
+	{
+		m_velocity.x += normalAccelSpeed;
+		// 最高速度を超えた場合
+		if (m_velocity.x > normalMoveSpeedLimit) {
+
+			m_velocity.x = normalMoveSpeedLimit;
+		}
+
+	}
+	// 摩擦をかける
+	else {
+		// 右側に移動している場合
+		if (m_velocity.x > 0) {
+			// 左に力を加える
+			m_velocity.x -= groundFriction;
+
+			if (m_velocity.x < 0) {
+				m_velocity.x = 0;
+			}
+		}
+
+	}
+}
+
+void Player::MoveDash()
+{
+}
+
+void Player::MoveAir()
+{
+	// 左キーを押している場合
+	if (Input::instance->GetKey(DIK_LEFT)) {
+		// 左に移動する
+		m_velocity.x -= airSideMoveSpeed;
+
+		// 最高速度を超えた場合
+		if (m_velocity.x < -airSideMoveSpeedLimit) {
+
+			m_velocity.x = -airSideMoveSpeedLimit;
+		}
+	}
+	// 摩擦を加える
+	else
+	{
+		// 左側に移動している場合
+		if (m_velocity.x < 0) {
+			// 右に力を加える
+			m_velocity.x += airFriction;
+
+			if (m_velocity.x > 0) {
+				m_velocity.x = 0;
+			}
+		}
+	}
+
+	// 右キーが押されているとき
+	if (Input::instance->GetKey(DIK_RIGHT))
+	{
+		// 右に移動する
+		m_velocity.x += airSideMoveSpeed;
+		// 最高速度を超えた場合
+		if (m_velocity.x > airSideMoveSpeedLimit) {
+
+			m_velocity.x = airSideMoveSpeedLimit;
+		}
+	}
+	// 摩擦をかける
+	else {
+		// 右側に移動している場合
+		if (m_velocity.x > 0) {
+			// 左に力を加える
+			m_velocity.x -= airFriction;
+
+			if (m_velocity.x < 0) {
+				m_velocity.x = 0;
+			}
+		}
+	}
+
 }
 
 void Player::Move(DirectX::XMFLOAT3 movePos)
